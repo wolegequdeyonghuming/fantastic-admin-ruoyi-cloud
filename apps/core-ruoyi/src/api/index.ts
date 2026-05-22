@@ -99,6 +99,9 @@ api.interceptors.response.use(
       // 判断响应格式：支持 status (框架原生) 或 code (若依)
       const data = response.data
       const isSuccess = data.status === 1 || data.code === 200
+      const isUnauthorized = data.status === 0 || data.code === 401
+      const errorMsg = data.error || data.msg
+
       if (isSuccess) {
         if (data.error) {
           useFaToast().warning('Warning', {
@@ -107,8 +110,15 @@ api.interceptors.response.use(
           return Promise.reject(data)
         }
       }
-      else {
+      else if (isUnauthorized) {
         useAppAccountStore().requestLogout()
+      }
+      else {
+        // 业务错误，显示错误信息
+        useFaToast().error('Error', {
+          description: errorMsg || '请求失败',
+        })
+        return Promise.reject(response.data)
       }
       return Promise.resolve(data)
     }

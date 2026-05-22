@@ -7,10 +7,27 @@ interface ImportMetaEnv {
    */
   readonly VITE_APP_API_BASEURL: string
   /**
+   * ============ 若依后端设置 ===============
+   * 客户端ID
+   */
+  readonly VITE_APP_CLIENT_ID: string
+  /**
    * 调试工具，可设置 eruda 或 vconsole
    * Debugging tool, can set eruda or vconsole
    */
   readonly VITE_APP_DEBUG_TOOL: string
+  /**
+   * 接口加密功能开关(如需关闭 后端也必须对应关闭)
+   */
+  readonly VITE_APP_ENCRYPT: boolean
+  /**
+   * 接口响应解密 RSA 私钥与后端加密公钥对应 如更换需前后端一同更换
+   */
+  readonly VITE_APP_RSA_PRIVATE_KEY: string
+  /**
+   * 接口加密传输 RSA 公钥与后端解密私钥对应 如更换需前后端一同更换
+   */
+  readonly VITE_APP_RSA_PUBLIC_KEY: string
   /**
    * 应用配置面板
    * Application configuration panel

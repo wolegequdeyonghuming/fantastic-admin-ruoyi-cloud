@@ -1,4 +1,7 @@
+import type { LoginForm } from '#/ruoyi/user'
 import api from '../index'
+
+const CLIENT_ID = import.meta.env.VITE_APP_CLIENT_ID
 
 export default {
   // 后端获取路由数据
@@ -7,16 +10,18 @@ export default {
   }),
 
   // 登录
-  login: (data: {
-    account: string
-    password: string
-  }) => api.post('app/account/login', data, {
-    fake: true,
-  }),
-
-  // 获取权限
-  permission: () => api.get('app/account/permission', {
-    fake: true,
+  login: (data: LoginForm) => api.post('/auth/login', {
+    ...data,
+    tenantId: data.tenantId || '000000',
+    clientId: data.clientId || CLIENT_ID,
+    grantType: data.grantType || 'password',
+  }, {
+    isToken: false,
+    retry: false,
+    headers: {
+      isEncrypt: true,
+      isToken: false,
+    },
   }),
 
   // 修改密码
@@ -27,4 +32,11 @@ export default {
     fake: true,
   }),
 
+  info: () => api.get('/system/user/getInfo'),
+
+  getCaptcha: () => api.get('/auth/code'),
+
+  getTenantList: () => api.get('/auth/tenant/list'),
+
+  logout: () => api.post('/auth/logout'),
 }

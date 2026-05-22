@@ -64,13 +64,13 @@ const profileModal = useFaModal().create({
   >
     <template #header>
       <div class="flex-center-start gap-2">
-        <FaAvatar :src="appAccountStore.avatar" :fallback="appAccountStore.account.slice(0, 2)" shape="square" />
+        <FaAvatar :src="appAccountStore.avatar" :fallback="appAccountStore.nickname.slice(0, 2)" shape="square" />
         <div class="min-w-0 space-y-1">
           <div class="text-base lh-none truncate">
-            {{ appAccountStore.account }}
+            {{ appAccountStore.nickname }}
           </div>
           <div class="text-xs text-secondary-foreground/50 font-normal">
-            [ xyz@xyz.com ]
+            {{ appAccountStore.username }}
           </div>
         </div>
       </div>
@@ -85,7 +85,7 @@ const profileModal = useFaModal().create({
       </FaAvatar>
       <div v-if="!onlyAvatar" class="flex-center-between flex-1 gap-2 min-w-0">
         <div class="text-start flex-1 truncate">
-          {{ appAccountStore.account }}
+          {{ appAccountStore.nickname }}
         </div>
         <FaIcon name="i-material-symbols:expand-all-rounded" />
       </div>

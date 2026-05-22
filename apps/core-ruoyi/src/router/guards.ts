@@ -33,8 +33,8 @@ function setupRoutes(router: Router) {
       }
       else {
         try {
-          // 获取用户权限
-          appSettingsStore.settings.app.account.auth && await appAccountStore.getPermissions()
+          // 获取用户信息和权限（若依 getInfo 已包含权限数据）
+          await appAccountStore.getInfo()
           // 生成动态路由
           switch (appSettingsStore.settings.app.routeBaseOn) {
             case 'frontend':

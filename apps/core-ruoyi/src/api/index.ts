@@ -1,9 +1,12 @@
 import axios from 'axios'
 // import qs from 'qs'
+import { decryptBase64, decryptWithAes, encryptBase64, encryptWithAes, generateAesKey } from '@/utils/crypto'
+import { decrypt, encrypt } from '@/utils/jsencrypt'
 
 // 请求重试配置
 const MAX_RETRY_COUNT = 3 // 最大重试次数
 const RETRY_DELAY = 1000 // 重试延迟时间（毫秒）
+const ENCRYPT_HEADER = 'encrypt-key'
 
 // 扩展 AxiosRequestConfig 类型
 declare module 'axios' {
@@ -11,6 +14,7 @@ declare module 'axios' {
     retry?: boolean
     retryCount?: number
     fake?: boolean
+    isToken?: boolean
   }
 }
 
@@ -31,7 +35,10 @@ api.interceptors.request.use(
     // 设置请求头
     if (request.headers) {
       request.headers['Accept-Language'] = 'zh-CN'
-      if (appAccountStore.isLogin) {
+      request.headers.clientid = import.meta.env.VITE_APP_CLIENT_ID
+      request.headers['Content-Type'] = request.headers['Content-Type'] || 'application/json;charset=UTF-8'
+      if (appAccountStore.isLogin && !request.headers.isToken) {
+        request.headers.Authorization = `Bearer ${appAccountStore.token}`
         request.headers.Token = appAccountStore.token
       }
     }
@@ -41,6 +48,16 @@ api.interceptors.request.use(
       //   arrayFormat: 'brackets',
       // })
     }
+    if (import.meta.env.VITE_APP_ENCRYPT) {
+      // 当开启参数加密
+      if (request.headers.isEncrypt && (request.method === 'post' || request.method === 'put')) {
+        // 生成一个 AES 密钥
+        const aesKey = generateAesKey()
+        request.headers[ENCRYPT_HEADER] = encrypt(encryptBase64(aesKey))
+        request.data = typeof request.data === 'object' ? encryptWithAes(JSON.stringify(request.data), aesKey) : encryptWithAes(request.data, aesKey)
+      }
+    }
+
     return request
   },
 )
@@ -60,6 +77,17 @@ function handleError(error: any) {
 
 api.interceptors.response.use(
   (response) => {
+    // 解密
+    if (import.meta.env.VITE_APP_ENCRYPT) {
+      const keyStr = response.headers[ENCRYPT_HEADER]
+      if (keyStr) {
+        const data = response.data
+        const base64Str = decrypt(keyStr)
+        const aesKey = decryptBase64(base64Str.toString())
+        const decryptData = decryptWithAes(data, aesKey)
+        response.data = JSON.parse(decryptData)
+      }
+    }
     /**
      * 全局拦截请求发送后返回的数据，如果数据有报错则在这做全局的错误提示
      * 约定的数据格式：{ status: 1 | 0, error: string, data: object }
@@ -68,18 +96,21 @@ api.interceptors.response.use(
      * data 只有在请求成功时才会有值，表示请求返回的数据
      */
     if (typeof response.data === 'object') {
-      if (response.data.status === 1) {
-        if (response.data.error) {
+      // 判断响应格式：支持 status (框架原生) 或 code (若依)
+      const data = response.data
+      const isSuccess = data.status === 1 || data.code === 200
+      if (isSuccess) {
+        if (data.error) {
           useFaToast().warning('Warning', {
-            description: response.data.error,
+            description: data.error,
           })
-          return Promise.reject(response.data)
+          return Promise.reject(data)
         }
       }
       else {
         useAppAccountStore().requestLogout()
       }
-      return Promise.resolve(response.data)
+      return Promise.resolve(data)
     }
     else {
       return Promise.reject(response.data)

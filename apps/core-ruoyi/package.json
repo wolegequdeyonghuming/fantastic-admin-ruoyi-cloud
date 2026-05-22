@@ -1,5 +1,5 @@
 {
-  "name": "@fantastic-admin/core",
+  "name": "@fantastic-admin/core-ruoyi",
   "type": "module",
   "private": true,
   "scripts": {
@@ -24,11 +24,13 @@
     "axios": "catalog:",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
+    "crypto-js": "catalog:",
     "dayjs": "catalog:",
     "element-plus": "catalog:",
     "eruda": "catalog:",
     "es-toolkit": "catalog:",
     "hotkeys-js": "catalog:",
+    "jsencrypt": "catalog:",
     "lucide-vue-next": "catalog:",
     "mitt": "catalog:",
     "nprogress": "catalog:",
@@ -55,6 +57,7 @@
     "@fantastic-admin/iconify-tools": "workspace:*",
     "@iconify/vue": "catalog:",
     "@spiriit/vite-plugin-svg-spritemap": "catalog:",
+    "@types/crypto-js": "catalog:",
     "@types/nprogress": "catalog:",
     "@types/path-browserify": "catalog:",
     "@types/qs": "catalog:",

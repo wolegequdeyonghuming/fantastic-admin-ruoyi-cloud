@@ -13,7 +13,7 @@ export const useAppMenuStore = defineStore(
     function convertRouteToMenu(routes: RouteRecordMainRaw[]): MenuRecordMainRaw[] {
       const returnMenus: MenuRecordMainRaw[] = []
       routes.forEach((item) => {
-        if (item.children.length > 0) {
+        if (item.children && item.children.length > 0) {
           if (appSettingsStore.settings.menu.mode === 'single') {
             returnMenus.length === 0 && returnMenus.push({
               meta: {},

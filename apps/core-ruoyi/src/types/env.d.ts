@@ -7,7 +7,7 @@ interface ImportMetaEnv {
    */
   readonly VITE_APP_API_BASEURL: string
   /**
-   * ============ 若依后端设置 ===============
+   * RuoYi 接口加密功能开关(如需关闭 后端也必须对应关闭)
    * 客户端ID
    */
   readonly VITE_APP_CLIENT_ID: string
@@ -16,9 +16,6 @@ interface ImportMetaEnv {
    * Debugging tool, can set eruda or vconsole
    */
   readonly VITE_APP_DEBUG_TOOL: string
-  /**
-   * 接口加密功能开关(如需关闭 后端也必须对应关闭)
-   */
   readonly VITE_APP_ENCRYPT: boolean
   /**
    * 接口响应解密 RSA 私钥与后端加密公钥对应 如更换需前后端一同更换

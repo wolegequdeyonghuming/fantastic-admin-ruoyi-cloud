@@ -39,4 +39,6 @@ export default {
   getTenantList: () => api.get('/auth/tenant/list'),
 
   logout: () => api.post('/auth/logout'),
+
+  getRouters: () => api.get('/system/menu/getRouters'),
 }

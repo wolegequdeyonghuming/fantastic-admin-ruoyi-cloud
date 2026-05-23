@@ -1,7 +1,9 @@
 **中文** | [English](./README.EN.md)
 <a href="https://fantastic-admin.hurui.me" target="_blank"><img src="https://fantastic-admin.hurui.me/logo.svg" align="right" height="80" alt="logo" /></a>
 
-# Fantastic-admin
+# Fantastic-admin-RuoYi-Cloud
+
+## 适配 <a href="https://gitee.com/dromara/RuoYi-Cloud-Plus">RuoYi-Cloud-Plus</a>
 
 面向 **AI** 的管理系统框架
 

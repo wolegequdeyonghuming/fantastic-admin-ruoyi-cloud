@@ -37,6 +37,7 @@ catalog:
   cz-git: ^1.13.1
   dayjs: ^1.11.20
   defu: ^6.1.7
+  echarts: ^6.1.0
   element-plus: ^2.14.0
   eruda: ^3.4.3
   es-toolkit: ^1.46.1

@@ -40,8 +40,10 @@ export const useAppMenuStore = defineStore(
     function convertRouteToMenuRecursive(routes: RouteRecordRaw[], basePath = ''): MenuRecordRaw[] {
       const returnMenus: MenuRecordRaw[] = []
       routes.forEach((item) => {
+        // 外链路径不做拼接处理
+        const isExternalLink = /^https?:/.test(item.path) || item.meta?.link
         const menuItem: MenuRecordRaw = {
-          path: resolveRoutePath(basePath, item.path),
+          path: isExternalLink ? (item.meta?.link || item.path) : resolveRoutePath(basePath, item.path),
           meta: {
             auth: item?.meta?.auth,
             title: item?.meta?.title,
@@ -52,7 +54,7 @@ export const useAppMenuStore = defineStore(
           },
         }
         if (item.children) {
-          menuItem.children = convertRouteToMenuRecursive(item.children, menuItem.path)
+          menuItem.children = convertRouteToMenuRecursive(item.children, isExternalLink ? '' : menuItem.path)
         }
         returnMenus.push(menuItem)
       })

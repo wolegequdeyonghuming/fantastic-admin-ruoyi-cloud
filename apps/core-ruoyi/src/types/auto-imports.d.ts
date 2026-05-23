@@ -80,6 +80,8 @@ declare global {
   const useAttrs: typeof import('vue').useAttrs
   const useCssModule: typeof import('vue').useCssModule
   const useCssVars: typeof import('vue').useCssVars
+  const useDict: typeof import('../composables/useDict').useDict
+  const useDictStore: typeof import('../store/modules/app/dict').useDictStore
   const useFaDrawer: typeof import('@fantastic-admin/components').useFaDrawer
   const useFaImagePreview: typeof import('@fantastic-admin/components').useFaImagePreview
   const useFaModal: typeof import('@fantastic-admin/components').useFaModal

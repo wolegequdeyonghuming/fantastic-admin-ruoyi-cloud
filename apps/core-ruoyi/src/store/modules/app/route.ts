@@ -14,30 +14,84 @@ export const useAppRouteStore = defineStore(
     // 已注册的路由，用于登出时删除路由
     const currentRemoveRoutes = ref<(() => void)[]>([])
 
+    // 递归处理所有子路由的 path，将相对路径转换为绝对路径
+    function resolveChildrenPathInRoutes(children: any[], parentPath: string) {
+      children.forEach((child: any) => {
+        if (child.path && !child.path.startsWith('/')) {
+          child.path = resolveRoutePath(parentPath, child.path)
+        }
+        // 递归处理孙子路由及更深层级
+        if (child.children && child.children.length > 0) {
+          resolveChildrenPathInRoutes(child.children, child.path)
+        }
+      })
+    }
+
     // 实际路由
     const routes = computed(() => {
       const returnRoutes: RouteRecordRaw[] = []
       if (routesRaw.value) {
         routesRaw.value.forEach((item) => {
-          const tmpRoutes = cloneDeep(item.children) as any[]
-          tmpRoutes.map((v) => {
-            if (!v.meta) {
-              v.meta = {}
-            }
-            v.meta.auth = item.meta?.auth ?? v.meta?.auth
-            // 将相对路径转换为绝对路径
-            if (v.path && !v.path.startsWith('/')) {
-              v.path = resolveRoutePath(item.path, v.path)
-            }
-            return v
-          })
-          returnRoutes.push(...tmpRoutes as RouteRecordRaw[])
-        })
-        returnRoutes.forEach((item) => {
-          if (item.children) {
-            item.children = deleteMiddleRouteComponent(item.children)
+          const routeItem = item as unknown as RouteRecordRaw
+
+          // 跳过外链路由（不注册到 Vue Router）
+          if (routeItem.meta?.link || /^https?:/.test(routeItem.path)) {
+            return
           }
-          return item
+
+          // 复制父级路由（包含 Layout 组件）
+          const parentRoute: any = {
+            path: routeItem.path,
+            name: routeItem.name,
+            component: routeItem.component,
+            meta: { ...routeItem.meta },
+          }
+
+          // 条件添加 redirect（如果存在）
+          if (routeItem.redirect) {
+            parentRoute.redirect = routeItem.redirect
+          }
+
+          // 处理子路由
+          if (routeItem.children) {
+            // 过滤外链子路由
+            parentRoute.children = routeItem.children
+              .filter((child: any) => {
+                return !(child.meta?.link || /^https?:/.test(child.path))
+              })
+              .map((child) => {
+                const newRoute = { ...child } as RouteRecordRaw
+                // 显式保留 component 函数（cloneDeep 会丢失它）
+                if (child.component) {
+                  newRoute.component = child.component as any
+                }
+                // 处理 meta
+                if (!newRoute.meta) {
+                  newRoute.meta = {}
+                }
+                newRoute.meta.auth = routeItem.meta?.auth ?? newRoute.meta?.auth
+                // 将相对路径转换为绝对路径
+                if (newRoute.path && !newRoute.path.startsWith('/')) {
+                  newRoute.path = resolveRoutePath(routeItem.path, newRoute.path)
+                }
+                // 递归处理孙子路由及更深层级
+                if (newRoute.children && newRoute.children.length > 0) {
+                  resolveChildrenPathInRoutes(newRoute.children, newRoute.path)
+                }
+                // 深拷贝嵌套的 children（它们没有 component 函数）
+                if (child.children) {
+                  newRoute.children = cloneDeep(child.children)
+                }
+                return newRoute
+              })
+
+            // 删除中间层级的组件（保持框架原有逻辑）
+            if (parentRoute.children.length > 0) {
+              parentRoute.children = deleteMiddleRouteComponent(parentRoute.children)
+            }
+          }
+
+          returnRoutes.push(parentRoute)
         })
       }
       return returnRoutes
@@ -108,9 +162,17 @@ export const useAppRouteStore = defineStore(
       routesRaw.value = sortAsyncRoutes(cloneDeep(asyncRoutes) as any)
       // 创建路由匹配器
       const routes: RouteRecordRaw[] = []
-      routesRaw.value.forEach((route) => {
+      routesRaw.value.forEach((route: any) => {
+        // 跳过外链路由（不注册到 Vue Router）
+        if (route.meta?.link || /^https?:/.test(route.path)) {
+          return
+        }
         if (route.children) {
-          routes.push(...route.children)
+          // 过滤外链子路由
+          const filteredChildren = route.children.filter((child: any) => {
+            return !(child.meta?.link || /^https?:/.test(child.path))
+          })
+          routes.push(...filteredChildren)
         }
       })
       routesMatcher.value = createRouterMatcher(routes, {})
@@ -150,6 +212,8 @@ export const useAppRouteStore = defineStore(
         // 处理外链（若依通过 meta.link 或 path 以 http/https 开头标识外链）
         if (route.meta?.link || /^https?:/.test(route.path)) {
           route.meta.link = route.meta?.link || route.path
+          // 外链路由不需要注册到 Vue Router，通过 meta.menu = false 隐藏
+          route.meta.menu = false
         }
 
         // 处理组件映射
@@ -169,7 +233,6 @@ export const useAppRouteStore = defineStore(
                 route.component = viewComponent
               }
               else {
-                console.warn(`[路由] 视图文件不存在: ${viewPath}，路由: ${route.name}`)
                 // 创建占位组件，避免路由失效导致循环
                 const missingViewPath = route.component
                 const missingRouteName = route.name
@@ -206,6 +269,19 @@ export const useAppRouteStore = defineStore(
         return route
       })
     }
+    // 递归处理所有子路由的 path，将相对路径转换为绝对路径
+    function resolveChildrenPath(children: any[], parentPath: string) {
+      children.forEach((child: any) => {
+        if (child.path && !child.path.startsWith('/')) {
+          child.path = resolveRoutePath(parentPath, child.path)
+        }
+        // 递归处理孙子路由及更深层级
+        if (child.children && child.children.length > 0) {
+          resolveChildrenPath(child.children, child.path)
+        }
+      })
+    }
+
     // 生成路由（后端获取）
     async function generateRoutesAtBack() {
       await apiApp.getRouters().then((res: any) => {
@@ -215,15 +291,31 @@ export const useAppRouteStore = defineStore(
           // 创建路由匹配器
           const routes: RouteRecordRaw[] = []
           routesRaw.value.forEach((route: any) => {
+            // 跳过外链路由（不注册到 Vue Router）
+            if (route.meta?.link || /^https?:/.test(route.path)) {
+              return
+            }
             if (route.children) {
-              // 将子路由的相对路径转换为绝对路径
+              // 将子路由的相对路径转换为绝对路径，并过滤外链
+              route.children = route.children.filter((child: any) => {
+                // 跳过外链子路由
+                if (child.meta?.link || /^https?:/.test(child.path)) {
+                  return false
+                }
+                return true
+              })
               route.children.forEach((child: any) => {
                 if (child.path && !child.path.startsWith('/')) {
                   child.path = resolveRoutePath(route.path, child.path)
                 }
+                // 处理孙子路由及更深层级
+                if (child.children && child.children.length > 0) {
+                  resolveChildrenPath(child.children, child.path)
+                }
               })
-              routes.push(...route.children)
             }
+            // 推送完整的路由对象（包含 Layout 组件包裹子路由）
+            routes.push(route)
           })
           routesMatcher.value = createRouterMatcher(routes, {})
         }

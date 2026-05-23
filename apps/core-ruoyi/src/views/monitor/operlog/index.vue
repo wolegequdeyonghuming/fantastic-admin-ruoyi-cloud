@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ElFormInstance, ElTableInstance } from '#/element-plus'
+import { Search, RefreshRight } from '@element-plus/icons-vue'
 import type { OperLogQuery, OperLogVO } from '@/api/modules/monitor/operlog/types'
 import { cleanOperlog, delOperlog, list } from '@/api/modules/monitor/operlog'
 import DictTag from '@/components/RuoYi/DictTag/index.vue'
@@ -23,7 +24,7 @@ const sysCommonStatusOptions = getDictOptions('sys_common_status')
 
 // 状态
 const loading = ref(false)
-const operlogList = ref<OperLogVO[]>([])
+const pagedList = ref<OperLogVO[]>([])
 const total = ref(0)
 const selectedIds = ref<Array<number | string>>([])
 const showSearch = ref(true)
@@ -53,14 +54,14 @@ const queryParams = reactive<OperLogQuery>({
 async function getList() {
   loading.value = true
   try {
-    const { data } = await list({
+    const data = await list({
       ...queryParams,
       params: {
         beginTime: dateRange.value[0],
         endTime: dateRange.value[1],
       },
     })
-    operlogList.value = data.rows
+    pagedList.value = data.rows
     total.value = data.total
   }
   finally {
@@ -145,9 +146,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <FaPageMain title="操作日志">
+  <FaPageMain>
     <!-- 搜索栏 -->
-    <FaSearchBar v-model:fold="searchFold" :show-toggle="true">
+    <FaSearchBar v-model:fold="searchFold" :show-toggle="true" class="mb-4">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
         <el-form-item label="操作地址" prop="operIp">
           <el-input v-model="queryParams.operIp" placeholder="请输入操作地址" clearable @keyup.enter="handleQuery" />
@@ -180,14 +181,14 @@ onMounted(() => {
           />
         </el-form-item>
         <el-form-item>
-          <FaButton type="primary" @click="handleQuery">
-            <FaIcon name="i-lucide:search" class="mr-1" />
+          <el-button type="primary" @click="handleQuery">
+            <el-icon><Search /></el-icon>
             搜索
-          </FaButton>
-          <FaButton variant="outline" @click="resetQuery">
-            <FaIcon name="i-lucide:rotate-ccw" class="mr-1" />
+          </el-button>
+          <el-button @click="resetQuery">
+            <el-icon><RefreshRight /></el-icon>
             重置
-          </FaButton>
+          </el-button>
         </el-form-item>
       </el-form>
     </FaSearchBar>
@@ -220,7 +221,7 @@ onMounted(() => {
     <el-table
       ref="operLogTableRef"
       v-loading="loading"
-      :data="operlogList"
+      :data="pagedList"
       border
       :default-sort="defaultSort"
       @selection-change="handleSelectionChange"

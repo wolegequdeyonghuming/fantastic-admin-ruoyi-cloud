@@ -1,5 +1,5 @@
 <template>
-  <FaPageMain title="缓存监控">
+  <FaPageMain>
     <!-- 基本信息 -->
     <FaCard title="基本信息" class="mb-4">
       <div class="grid grid-cols-4 gap-4">

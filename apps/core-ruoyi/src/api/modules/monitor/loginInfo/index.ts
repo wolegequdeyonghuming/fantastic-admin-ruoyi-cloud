@@ -1,10 +1,10 @@
 import api from '@/api'
 import type { LoginInfoQuery, LoginInfoVO } from './types'
-import type { PageResult } from '@/types/ruoyi/common'
+import type { PageResponse } from '@/types/ruoyi/common'
 
 // 查询登录日志列表
 export function list(query: LoginInfoQuery) {
-  return api.get<PageResult<LoginInfoVO>>('/monitor/logininfor/list', {
+  return api.get<PageResponse<LoginInfoVO>>('/monitor/logininfor/list', {
     params: query,
   })
 }

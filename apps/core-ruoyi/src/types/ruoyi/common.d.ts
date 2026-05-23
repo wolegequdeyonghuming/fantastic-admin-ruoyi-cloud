@@ -37,6 +37,13 @@ export interface R<T = any> {
 export interface PageResult<T> {
   rows: T[]
   total: number
+  totalSum?: number | null
+}
+
+/** 若依分页响应结构（直接返回，非嵌套在data中） */
+export interface PageResponse<T> extends PageResult<T> {
+  code: number
+  msg: string
 }
 
 /** 字典数据选项 */

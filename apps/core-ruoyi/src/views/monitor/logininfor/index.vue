@@ -1,7 +1,7 @@
 <template>
-  <FaPageMain title="登录日志">
+  <FaPageMain>
     <!-- 搜索栏 -->
-    <FaSearchBar v-model:fold="searchFold" :show-toggle="true">
+    <FaSearchBar v-model:fold="searchFold" :show-toggle="true" class="mb-4">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
         <el-form-item label="登录地址" prop="ipaddr">
           <el-input v-model="queryParams.ipaddr" placeholder="请输入登录地址" clearable @keyup.enter="handleQuery" />
@@ -26,14 +26,14 @@
           />
         </el-form-item>
         <el-form-item>
-          <FaButton type="primary" @click="handleQuery">
-            <FaIcon name="i-lucide:search" class="mr-1" />
+          <el-button type="primary" @click="handleQuery">
+            <el-icon><Search /></el-icon>
             搜索
-          </FaButton>
-          <FaButton variant="outline" @click="resetQuery">
-            <FaIcon name="i-lucide:rotate-ccw" class="mr-1" />
+          </el-button>
+          <el-button @click="resetQuery">
+            <el-icon><RefreshRight /></el-icon>
             重置
-          </FaButton>
+          </el-button>
         </el-form-item>
       </el-form>
     </FaSearchBar>
@@ -75,7 +75,7 @@
     <el-table
       ref="loginInfoTableRef"
       v-loading="loading"
-      :data="loginInfoList"
+      :data="pagedList"
       :default-sort="defaultSort"
       border
       @selection-change="handleSelectionChange"
@@ -129,6 +129,7 @@
 
 <script setup lang="ts">
 import type { ElFormInstance, ElTableInstance } from '#/element-plus'
+import { Search, RefreshRight } from '@element-plus/icons-vue'
 import { cleanLoginInfo, delLoginInfo, list, unlockLoginInfo } from '@/api/modules/monitor/loginInfo'
 import type { LoginInfoQuery, LoginInfoVO } from '@/api/modules/monitor/loginInfo/types'
 import DictTag from '@/components/RuoYi/DictTag/index.vue'
@@ -151,7 +152,7 @@ const sysCommonStatusOptions = getDictOptions('sys_common_status')
 
 // 状态
 const loading = ref(false)
-const loginInfoList = ref<LoginInfoVO[]>([])
+const pagedList = ref<LoginInfoVO[]>([])
 const total = ref(0)
 const selectedIds = ref<Array<number | string>>([])
 const selectedNames = ref<Array<string>>([])
@@ -179,14 +180,14 @@ const queryParams = reactive<LoginInfoQuery>({
 async function getList() {
   loading.value = true
   try {
-    const { data } = await list({
+    const data = await list({
       ...queryParams,
       params: {
         beginTime: dateRange.value[0],
         endTime: dateRange.value[1],
       },
     })
-    loginInfoList.value = data.rows
+    pagedList.value = data.rows
     total.value = data.total
   }
   finally {

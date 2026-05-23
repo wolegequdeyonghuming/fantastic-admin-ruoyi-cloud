@@ -1,10 +1,10 @@
 import api from '@/api'
 import type { OnlineQuery, OnlineVO } from './types'
-import type { PageResult } from '@/types/ruoyi/common'
+import type { PageResponse } from '@/types/ruoyi/common'
 
 // 查询在线用户列表
 export function list(query: OnlineQuery) {
-  return api.get<PageResult<OnlineVO>>('/monitor/online/list', {
+  return api.get<PageResponse<OnlineVO>>('/monitor/online/list', {
     params: query,
   })
 }

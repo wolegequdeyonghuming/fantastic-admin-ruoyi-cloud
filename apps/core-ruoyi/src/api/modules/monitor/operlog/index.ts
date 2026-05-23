@@ -1,10 +1,10 @@
 import api from '@/api'
 import type { OperLogQuery, OperLogVO } from './types'
-import type { PageResult } from '@/types/ruoyi/common'
+import type { PageResponse } from '@/types/ruoyi/common'
 
 // 查询操作日志列表
 export function list(query: OperLogQuery) {
-  return api.get<PageResult<OperLogVO>>('/monitor/operlog/list', {
+  return api.get<PageResponse<OperLogVO>>('/monitor/operlog/list', {
     params: query,
   })
 }

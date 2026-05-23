@@ -1,7 +1,91 @@
+<script setup lang="ts">
+import type { ElFormInstance } from '#/element-plus'
+import type { OnlineQuery, OnlineVO } from '@/api/modules/monitor/online/types'
+import { RefreshRight, Search } from '@element-plus/icons-vue'
+import { forceLogout, list } from '@/api/modules/monitor/online'
+import DictTag from '@/components/RuoYi/DictTag/index.vue'
+import { useDict } from '@/composables/useDict'
+
+defineOptions({
+  name: 'Online',
+})
+
+// Hooks
+const { confirm, toast } = useFaModal()
+const { success } = useFaToast()
+const { getDictOptions, parseTime } = useDict()
+
+// 字典数据
+const sysDeviceTypeOptions = getDictOptions('sys_device_type')
+
+// 状态
+const loading = ref(false)
+const pagedList = ref<OnlineVO[]>([])
+const total = ref(0)
+const searchFold = ref(false)
+
+// Refs
+const queryFormRef = ref<ElFormInstance>()
+
+// 查询参数
+const queryParams = reactive<OnlineQuery>({
+  pageNum: 1,
+  pageSize: 10,
+  ipaddr: '',
+  userName: '',
+})
+
+/** 查询在线用户列表 */
+async function getList() {
+  loading.value = true
+  try {
+    const data = await list(queryParams)
+    pagedList.value = data.rows
+    total.value = data.total
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+/** 搜索按钮操作 */
+function handleQuery() {
+  queryParams.pageNum = 1
+  getList()
+}
+
+/** 重置按钮操作 */
+function resetQuery() {
+  queryFormRef.value?.resetFields()
+  handleQuery()
+}
+
+/** 强退按钮操作 */
+async function handleForceLogout(row: OnlineVO) {
+  try {
+    await confirm({
+      title: '系统提示',
+      content: `是否确认强退名称为"${row.userName}"的用户?`,
+      type: 'warning',
+    })
+    await forceLogout(row.tokenId)
+    success('强退成功')
+    getList()
+  }
+  catch {
+    // 用户取消
+  }
+}
+
+onMounted(() => {
+  getList()
+})
+</script>
+
 <template>
-  <FaPageMain title="在线用户">
+  <FaPageMain>
     <!-- 搜索栏 -->
-    <FaSearchBar v-model:fold="searchFold" :show-toggle="true">
+    <FaSearchBar v-model:fold="searchFold" :show-toggle="true" class="mb-4">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
         <el-form-item label="登录地址" prop="ipaddr">
           <el-input v-model="queryParams.ipaddr" placeholder="请输入登录地址" clearable @keyup.enter="handleQuery" />
@@ -10,14 +94,14 @@
           <el-input v-model="queryParams.userName" placeholder="请输入用户名称" clearable @keyup.enter="handleQuery" />
         </el-form-item>
         <el-form-item>
-          <FaButton type="primary" @click="handleQuery">
-            <FaIcon name="i-lucide:search" class="mr-1" />
+          <el-button type="primary" @click="handleQuery">
+            <el-icon><Search /></el-icon>
             搜索
-          </FaButton>
-          <FaButton variant="outline" @click="resetQuery">
-            <FaIcon name="i-lucide:rotate-ccw" class="mr-1" />
+          </el-button>
+          <el-button @click="resetQuery">
+            <el-icon><RefreshRight /></el-icon>
             重置
-          </FaButton>
+          </el-button>
         </el-form-item>
       </el-form>
     </FaSearchBar>
@@ -72,93 +156,3 @@
     />
   </FaPageMain>
 </template>
-
-<script setup lang="ts">
-import type { ElFormInstance } from '#/element-plus'
-import { forceLogout, list } from '@/api/modules/monitor/online'
-import type { OnlineQuery, OnlineVO } from '@/api/modules/monitor/online/types'
-import DictTag from '@/components/RuoYi/DictTag/index.vue'
-import { useDict } from '@/composables/useDict'
-
-defineOptions({
-  name: 'Online',
-})
-
-// Hooks
-const { confirm, toast } = useFaModal()
-const { success } = useFaToast()
-const { getDictOptions, parseTime } = useDict()
-
-// 字典数据
-const sysDeviceTypeOptions = getDictOptions('sys_device_type')
-
-// 状态
-const loading = ref(false)
-const onlineList = ref<OnlineVO[]>([])
-const total = ref(0)
-const searchFold = ref(false)
-
-// Refs
-const queryFormRef = ref<ElFormInstance>()
-
-// 查询参数
-const queryParams = reactive<OnlineQuery>({
-  pageNum: 1,
-  pageSize: 10,
-  ipaddr: '',
-  userName: '',
-})
-
-// 分页后的数据
-const pagedList = computed(() => {
-  const start = (queryParams.pageNum - 1) * queryParams.pageSize
-  const end = start + queryParams.pageSize
-  return onlineList.value.slice(start, end)
-})
-
-/** 查询在线用户列表 */
-async function getList() {
-  loading.value = true
-  try {
-    const { data } = await list(queryParams)
-    onlineList.value = data.rows
-    total.value = data.total
-  }
-  finally {
-    loading.value = false
-  }
-}
-
-/** 搜索按钮操作 */
-function handleQuery() {
-  queryParams.pageNum = 1
-  getList()
-}
-
-/** 重置按钮操作 */
-function resetQuery() {
-  queryFormRef.value?.resetFields()
-  handleQuery()
-}
-
-/** 强退按钮操作 */
-async function handleForceLogout(row: OnlineVO) {
-  try {
-    await confirm({
-      title: '系统提示',
-      content: `是否确认强退名称为"${row.userName}"的用户?`,
-      type: 'warning',
-    })
-    await forceLogout(row.tokenId)
-    success('强退成功')
-    getList()
-  }
-  catch {
-    // 用户取消
-  }
-}
-
-onMounted(() => {
-  getList()
-})
-</script>

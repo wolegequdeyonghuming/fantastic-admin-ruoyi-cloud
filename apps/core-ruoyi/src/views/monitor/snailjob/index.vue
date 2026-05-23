@@ -1,5 +1,5 @@
 <template>
-  <FaPageMain title="SnailJob 控制台" class="h-full">
+  <FaPageMain class="h-full">
     <IFrame :src="url" class="w-full h-full min-h-[600px]" />
   </FaPageMain>
 </template>

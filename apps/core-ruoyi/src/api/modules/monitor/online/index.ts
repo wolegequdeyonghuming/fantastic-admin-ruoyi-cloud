@@ -1,6 +1,6 @@
-import api from '@/api'
 import type { OnlineQuery, OnlineVO } from './types'
 import type { PageResponse } from '@/types/ruoyi/common'
+import api from '@/api'
 
 // 查询在线用户列表
 export function list(query: OnlineQuery) {

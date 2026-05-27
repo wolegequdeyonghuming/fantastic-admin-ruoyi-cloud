@@ -1,4 +1,4 @@
-import type { PageQuery, BaseEntity } from '@/types/ruoyi/common'
+import type { BaseEntity, PageQuery } from '@/types/ruoyi/common'
 
 export interface OnlineQuery extends PageQuery {
   ipaddr: string

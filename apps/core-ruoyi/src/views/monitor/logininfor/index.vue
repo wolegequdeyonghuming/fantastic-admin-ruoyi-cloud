@@ -1,137 +1,7 @@
-<template>
-  <FaPageMain>
-    <!-- 搜索栏 -->
-    <FaSearchBar v-model:fold="searchFold" :show-toggle="true" class="mb-4">
-      <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-        <el-form-item label="登录地址" prop="ipaddr">
-          <el-input v-model="queryParams.ipaddr" placeholder="请输入登录地址" clearable @keyup.enter="handleQuery" />
-        </el-form-item>
-        <el-form-item label="用户名称" prop="userName">
-          <el-input v-model="queryParams.userName" placeholder="请输入用户名称" clearable @keyup.enter="handleQuery" />
-        </el-form-item>
-        <el-form-item label="状态" prop="status">
-          <el-select v-model="queryParams.status" placeholder="登录状态" clearable>
-            <el-option v-for="dict in sysCommonStatusOptions" :key="dict.value" :label="dict.label" :value="dict.value" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="登录时间" style="width: 308px">
-          <el-date-picker
-            v-model="dateRange"
-            value-format="YYYY-MM-DD HH:mm:ss"
-            type="daterange"
-            range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]"
-          />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="handleQuery">
-            <el-icon><Search /></el-icon>
-            搜索
-          </el-button>
-          <el-button @click="resetQuery">
-            <el-icon><RefreshRight /></el-icon>
-            重置
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </FaSearchBar>
-
-    <!-- 操作栏 -->
-    <div class="my-4 flex items-center justify-between">
-      <div class="flex gap-2">
-        <FaButton
-          v-hasPermi="['monitor:logininfor:remove']"
-          variant="destructive"
-          :disabled="!selectedIds.length"
-          @click="handleDelete()"
-        >
-          <FaIcon name="i-lucide:trash-2" class="mr-1" />
-          删除
-        </FaButton>
-        <FaButton v-hasPermi="['monitor:logininfor:remove']" variant="outline" @click="handleClean">
-          <FaIcon name="i-lucide:alert-triangle" class="mr-1" />
-          清空
-        </FaButton>
-        <FaButton
-          v-hasPermi="['monitor:logininfor:unlock']"
-          variant="outline"
-          :disabled="!selectedNames.length"
-          @click="handleUnlock"
-        >
-          <FaIcon name="i-lucide:unlock" class="mr-1" />
-          解锁
-        </FaButton>
-        <FaButton v-hasPermi="['monitor:logininfor:export']" variant="outline" @click="handleExport">
-          <FaIcon name="i-lucide:download" class="mr-1" />
-          导出
-        </FaButton>
-      </div>
-      <RightToolbar v-model:show-search="showSearch" @query-table="getList" />
-    </div>
-
-    <!-- 数据表格 -->
-    <el-table
-      ref="loginInfoTableRef"
-      v-loading="loading"
-      :data="pagedList"
-      :default-sort="defaultSort"
-      border
-      @selection-change="handleSelectionChange"
-      @sort-change="handleSortChange"
-    >
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="访问编号" align="center" prop="infoId" />
-      <el-table-column
-        label="用户名称"
-        align="center"
-        prop="userName"
-        :show-overflow-tooltip="true"
-        sortable="custom"
-        :sort-orders="['descending', 'ascending']"
-      />
-      <el-table-column label="客户端" align="center" prop="clientKey" :show-overflow-tooltip="true" />
-      <el-table-column label="设备类型" align="center">
-        <template #default="scope">
-          <DictTag :options="sysDeviceTypeOptions" :value="scope.row.deviceType" />
-        </template>
-      </el-table-column>
-      <el-table-column label="地址" align="center" prop="ipaddr" :show-overflow-tooltip="true" />
-      <el-table-column label="登录地点" align="center" prop="loginLocation" :show-overflow-tooltip="true" />
-      <el-table-column label="操作系统" align="center" prop="os" :show-overflow-tooltip="true" />
-      <el-table-column label="浏览器" align="center" prop="browser" :show-overflow-tooltip="true" />
-      <el-table-column label="登录状态" align="center" prop="status">
-        <template #default="scope">
-          <DictTag :options="sysCommonStatusOptions" :value="scope.row.status" />
-        </template>
-      </el-table-column>
-      <el-table-column label="描述" align="center" prop="msg" :show-overflow-tooltip="true" />
-      <el-table-column label="访问时间" align="center" prop="loginTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
-        <template #default="scope">
-          <span>{{ parseTime(scope.row.loginTime) }}</span>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <!-- 分页 -->
-    <FaPagination
-      v-show="total > 0"
-      v-model:page="queryParams.pageNum"
-      v-model:size="queryParams.pageSize"
-      :total="total"
-      class="mt-4"
-      @page-change="getList"
-      @size-change="getList"
-    />
-  </FaPageMain>
-</template>
-
 <script setup lang="ts">
-import type { ElFormInstance, ElTableInstance } from '#/element-plus'
-import { Search, RefreshRight } from '@element-plus/icons-vue'
-import { cleanLoginInfo, delLoginInfo, list, unlockLoginInfo } from '@/api/modules/monitor/loginInfo'
 import type { LoginInfoQuery, LoginInfoVO } from '@/api/modules/monitor/loginInfo/types'
+import { RefreshRight, Search } from '@element-plus/icons-vue'
+import { cleanLoginInfo, delLoginInfo, list, unlockLoginInfo } from '@/api/modules/monitor/loginInfo'
 import DictTag from '@/components/RuoYi/DictTag/index.vue'
 import RightToolbar from '@/components/RuoYi/RightToolbar/index.vue'
 import { useDict } from '@/composables/useDict'
@@ -142,7 +12,7 @@ defineOptions({
 })
 
 // Hooks
-const { confirm, toast } = useFaModal()
+const { confirm } = useFaModal()
 const { success } = useFaToast()
 const { getDictOptions, parseTime } = useDict()
 
@@ -283,3 +153,132 @@ onMounted(() => {
   getList()
 })
 </script>
+
+<template>
+  <FaPageMain>
+    <!-- 搜索栏 -->
+    <FaSearchBar v-model:fold="searchFold" :show-toggle="true" class="mb-4">
+      <el-form ref="queryFormRef" :model="queryParams" :inline="true">
+        <el-form-item label="登录地址" prop="ipaddr">
+          <el-input v-model="queryParams.ipaddr" placeholder="请输入登录地址" clearable @keyup.enter="handleQuery" />
+        </el-form-item>
+        <el-form-item label="用户名称" prop="userName">
+          <el-input v-model="queryParams.userName" placeholder="请输入用户名称" clearable @keyup.enter="handleQuery" />
+        </el-form-item>
+        <el-form-item label="状态" prop="status">
+          <el-select v-model="queryParams.status" placeholder="登录状态" clearable>
+            <el-option v-for="dict in sysCommonStatusOptions" :key="dict.value" :label="dict.label" :value="dict.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="登录时间" style="width: 308px;">
+          <el-date-picker
+            v-model="dateRange"
+            value-format="YYYY-MM-DD HH:mm:ss"
+            type="daterange"
+            range-separator="-"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleQuery">
+            <el-icon><Search /></el-icon>
+            搜索
+          </el-button>
+          <el-button @click="resetQuery">
+            <el-icon><RefreshRight /></el-icon>
+            重置
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </FaSearchBar>
+
+    <!-- 操作栏 -->
+    <div class="my-4 flex items-center justify-between">
+      <div class="flex gap-2">
+        <FaButton
+          v-hasPermi="['monitor:logininfor:remove']"
+          variant="destructive"
+          :disabled="!selectedIds.length"
+          @click="handleDelete()"
+        >
+          <FaIcon name="i-lucide:trash-2" class="mr-1" />
+          删除
+        </FaButton>
+        <FaButton v-hasPermi="['monitor:logininfor:remove']" variant="outline" @click="handleClean">
+          <FaIcon name="i-lucide:alert-triangle" class="mr-1" />
+          清空
+        </FaButton>
+        <FaButton
+          v-hasPermi="['monitor:logininfor:unlock']"
+          variant="outline"
+          :disabled="!selectedNames.length"
+          @click="handleUnlock"
+        >
+          <FaIcon name="i-lucide:unlock" class="mr-1" />
+          解锁
+        </FaButton>
+        <FaButton v-hasPermi="['monitor:logininfor:export']" variant="outline" @click="handleExport">
+          <FaIcon name="i-lucide:download" class="mr-1" />
+          导出
+        </FaButton>
+      </div>
+      <RightToolbar v-model:show-search="showSearch" @query-table="getList" />
+    </div>
+
+    <!-- 数据表格 -->
+    <el-table
+      ref="loginInfoTableRef"
+      v-loading="loading"
+      :data="pagedList"
+      :default-sort="defaultSort"
+      border
+      @selection-change="handleSelectionChange"
+      @sort-change="handleSortChange"
+    >
+      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="访问编号" align="center" prop="infoId" />
+      <el-table-column
+        label="用户名称"
+        align="center"
+        prop="userName"
+        :show-overflow-tooltip="true"
+        sortable="custom"
+        :sort-orders="['descending', 'ascending']"
+      />
+      <el-table-column label="客户端" align="center" prop="clientKey" :show-overflow-tooltip="true" />
+      <el-table-column label="设备类型" align="center">
+        <template #default="scope">
+          <DictTag :options="sysDeviceTypeOptions" :value="scope.row.deviceType" />
+        </template>
+      </el-table-column>
+      <el-table-column label="地址" align="center" prop="ipaddr" :show-overflow-tooltip="true" />
+      <el-table-column label="登录地点" align="center" prop="loginLocation" :show-overflow-tooltip="true" />
+      <el-table-column label="操作系统" align="center" prop="os" :show-overflow-tooltip="true" />
+      <el-table-column label="浏览器" align="center" prop="browser" :show-overflow-tooltip="true" />
+      <el-table-column label="登录状态" align="center" prop="status">
+        <template #default="scope">
+          <DictTag :options="sysCommonStatusOptions" :value="scope.row.status" />
+        </template>
+      </el-table-column>
+      <el-table-column label="描述" align="center" prop="msg" :show-overflow-tooltip="true" />
+      <el-table-column label="访问时间" align="center" prop="loginTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
+        <template #default="scope">
+          <span>{{ parseTime(scope.row.loginTime) }}</span>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <!-- 分页 -->
+    <FaPagination
+      v-show="total > 0"
+      v-model:page="queryParams.pageNum"
+      v-model:size="queryParams.pageSize"
+      :total="total"
+      class="mt-4"
+      @page-change="getList"
+      @size-change="getList"
+    />
+  </FaPageMain>
+</template>

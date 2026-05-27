@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { ElFormInstance } from '#/element-plus'
 import type { OnlineQuery, OnlineVO } from '@/api/modules/monitor/online/types'
 import { RefreshRight, Search } from '@element-plus/icons-vue'
 import { forceLogout, list } from '@/api/modules/monitor/online'
@@ -11,7 +10,7 @@ defineOptions({
 })
 
 // Hooks
-const { confirm, toast } = useFaModal()
+const { confirm } = useFaModal()
 const { success } = useFaToast()
 const { getDictOptions, parseTime } = useDict()
 

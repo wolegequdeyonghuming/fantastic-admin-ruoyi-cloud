@@ -1,6 +1,6 @@
-import api from '@/api'
 import type { DictDataForm, DictDataQuery, DictDataVO } from './types'
-import type { PageResult, R } from '@/types/ruoyi/common'
+import type { PageResponse, R } from '@/types/ruoyi/common'
+import api from '@/api'
 
 // 根据字典类型查询字典数据信息
 export function getDicts(dictType: string) {
@@ -9,7 +9,7 @@ export function getDicts(dictType: string) {
 
 // 查询字典数据列表
 export function listData(query: DictDataQuery) {
-  return api.get<PageResult<DictDataVO>>('/system/dict/data/list', {
+  return api.get<PageResponse<DictDataVO>>('/system/dict/data/list', {
     params: query,
   })
 }

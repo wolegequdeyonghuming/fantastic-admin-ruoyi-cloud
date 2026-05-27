@@ -1,6 +1,6 @@
-import api from '@/api'
 import type { LoginInfoQuery, LoginInfoVO } from './types'
 import type { PageResponse } from '@/types/ruoyi/common'
+import api from '@/api'
 
 // 查询登录日志列表
 export function list(query: LoginInfoQuery) {

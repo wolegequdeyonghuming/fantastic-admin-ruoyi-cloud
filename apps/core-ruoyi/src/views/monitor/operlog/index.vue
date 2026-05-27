@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { ElFormInstance, ElTableInstance } from '#/element-plus'
-import { Search, RefreshRight } from '@element-plus/icons-vue'
+import type { Sort } from 'element-plus'
 import type { OperLogQuery, OperLogVO } from '@/api/modules/monitor/operlog/types'
+import { RefreshRight, Search } from '@element-plus/icons-vue'
 import { cleanOperlog, delOperlog, list } from '@/api/modules/monitor/operlog'
 import DictTag from '@/components/RuoYi/DictTag/index.vue'
 import RightToolbar from '@/components/RuoYi/RightToolbar/index.vue'
@@ -14,7 +14,7 @@ defineOptions({
 })
 
 // Hooks
-const { confirm, toast } = useFaModal()
+const { confirm } = useFaModal()
 const { success } = useFaToast()
 const { getDictOptions, parseTime } = useDict()
 
@@ -30,7 +30,7 @@ const selectedIds = ref<Array<number | string>>([])
 const showSearch = ref(true)
 const searchFold = ref(false)
 const dateRange = ref<[string, string]>(['', ''])
-const defaultSort = ref({ prop: 'operTime', order: 'descending' })
+const defaultSort = ref<Sort>({ prop: 'operTime', order: 'descending' })
 
 // Refs
 const operLogTableRef = ref<ElTableInstance>()
@@ -169,7 +169,7 @@ onMounted(() => {
             <el-option v-for="dict in sysCommonStatusOptions" :key="dict.value" :label="dict.label" :value="dict.value" />
           </el-select>
         </el-form-item>
-        <el-form-item label="操作时间" style="width: 308px">
+        <el-form-item label="操作时间" style="width: 308px;">
           <el-date-picker
             v-model="dateRange"
             value-format="YYYY-MM-DD HH:mm:ss"

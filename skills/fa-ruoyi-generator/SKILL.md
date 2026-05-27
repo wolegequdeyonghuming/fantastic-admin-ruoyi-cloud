@@ -199,6 +199,11 @@ import type { ElFormInstance, ElTableInstance } from '#/element-plus'
 
 **解决：** 搜索栏按钮统一使用 `el-button`，Element Plus 自带间距
 
+### Q5: 缺少依赖
+**原因：** 复制来的代码只有主要代码，主要是 views 文件夹下的，可能会缺少 api、types、components 等文件夹下的内容。
+
+**解决：** 以表格形式输出缺少的文件路径，手动拷贝缺失的文件夹。
+
 ---
 
 ## 迁移流程模板

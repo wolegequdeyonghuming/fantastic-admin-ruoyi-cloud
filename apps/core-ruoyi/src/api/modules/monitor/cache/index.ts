@@ -1,6 +1,6 @@
-import api from '@/api'
 import type { CacheVO } from './types'
 import type { R } from '@/types/ruoyi/common'
+import api from '@/api'
 
 // 查询缓存详细
 export function getCache() {

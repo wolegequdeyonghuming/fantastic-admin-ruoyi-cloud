@@ -1,4 +1,4 @@
-import type { PageQuery, BaseEntity, ElTagType } from '@/types/ruoyi/common'
+import type { BaseEntity, ElTagType, PageQuery } from '@/types/ruoyi/common'
 
 export interface DictDataQuery extends PageQuery {
   dictName: string

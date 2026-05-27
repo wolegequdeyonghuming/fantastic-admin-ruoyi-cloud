@@ -1,14 +1,12 @@
 <script setup lang="ts">
+import { Menu } from '@element-plus/icons-vue'
 import { propTypes } from '@/utils/propTypes'
 
 const props = defineProps({
-  showSearch: propTypes.bool.def(true),
   columns: propTypes.fieldOption,
-  search: propTypes.bool.def(true),
   gutter: propTypes.number.def(10),
 })
 
-const emits = defineEmits(['update:showSearch', 'queryTable'])
 const columnRef = ref<ElTreeInstance>()
 const style = computed(() => {
   const ret: any = {}
@@ -17,16 +15,6 @@ const style = computed(() => {
   }
   return ret
 })
-
-// 搜索
-function toggleSearch() {
-  emits('update:showSearch', !props.showSearch)
-}
-
-// 刷新
-function refresh() {
-  emits('queryTable')
-}
 
 // 更改数据列的显示和隐藏
 function columnChange(...args: any[]) {
@@ -49,12 +37,6 @@ onMounted(() => {
 <template>
   <div class="top-right-btn" :style="style">
     <el-row>
-      <el-tooltip v-if="search" class="item" effect="dark" :content="showSearch ? '隐藏搜索' : '显示搜索'" placement="top">
-        <el-button circle icon="Search" @click="toggleSearch()" />
-      </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-        <el-button circle icon="Refresh" @click="refresh()" />
-      </el-tooltip>
       <el-tooltip v-if="columns" class="item" effect="dark" content="显示/隐藏列" placement="top">
         <div class="show-btn">
           <el-popover placement="bottom" trigger="click">
@@ -70,7 +52,7 @@ onMounted(() => {
               @check="columnChange"
             />
             <template #reference>
-              <el-button circle icon="Menu" />
+              <el-button circle :icon="Menu" />
             </template>
           </el-popover>
         </div>
@@ -81,10 +63,11 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 :deep(.el-transfer__button) {
-  border-radius: 50%;
   display: block;
-  margin-left: 0px;
+  margin-left: 0;
+  border-radius: 50%;
 }
+
 :deep(.el-transfer__button:first-child) {
   margin-bottom: 10px;
 }
@@ -92,11 +75,13 @@ onMounted(() => {
 .my-el-transfer {
   text-align: center;
 }
+
 .tree-header {
   width: 100%;
   line-height: 24px;
   text-align: center;
 }
+
 .show-btn {
   margin-left: 12px;
 }

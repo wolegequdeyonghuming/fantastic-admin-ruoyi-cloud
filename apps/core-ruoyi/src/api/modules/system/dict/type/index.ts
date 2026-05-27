@@ -1,62 +1,31 @@
-import request from '@/utils/request';
-import { DictTypeForm, DictTypeVO, DictTypeQuery } from './types';
-import { AxiosPromise } from 'axios';
+import type { DictTypeForm, DictTypeQuery, DictTypeVO } from './types'
+import type { PageResponse, R } from '@/types/ruoyi/common'
+import api from '@/api'
 
-// 查询字典类型列表
-export function listType(query: DictTypeQuery): AxiosPromise<DictTypeVO[]> {
-  return request({
-    url: '/system/dict/type/list',
-    method: 'get',
-    params: query
-  });
+export function listType(query: DictTypeQuery) {
+  return api.get<PageResponse<DictTypeVO>>('/system/dict/type/list', { params: query })
 }
 
-// 查询字典类型详细
-export function getType(dictId: number | string): AxiosPromise<DictTypeVO> {
-  return request({
-    url: '/system/dict/type/' + dictId,
-    method: 'get'
-  });
+export function getType(dictId: number | string) {
+  return api.get<R<DictTypeVO>>(`/system/dict/type/${dictId}`)
 }
 
-// 新增字典类型
 export function addType(data: DictTypeForm) {
-  return request({
-    url: '/system/dict/type',
-    method: 'post',
-    data: data
-  });
+  return api.post('/system/dict/type', data)
 }
 
-// 修改字典类型
 export function updateType(data: DictTypeForm) {
-  return request({
-    url: '/system/dict/type',
-    method: 'put',
-    data: data
-  });
+  return api.put('/system/dict/type', data)
 }
 
-// 删除字典类型
 export function delType(dictId: string | number | Array<string | number>) {
-  return request({
-    url: '/system/dict/type/' + dictId,
-    method: 'delete'
-  });
+  return api.delete(`/system/dict/type/${dictId}`)
 }
 
-// 刷新字典缓存
 export function refreshCache() {
-  return request({
-    url: '/system/dict/type/refreshCache',
-    method: 'delete'
-  });
+  return api.delete('/system/dict/type/refreshCache')
 }
 
-// 获取字典选择框列表
-export function optionselect(): AxiosPromise<DictTypeVO[]> {
-  return request({
-    url: '/system/dict/type/optionselect',
-    method: 'get'
-  });
+export function optionselect() {
+  return api.get<R<DictTypeVO[]>>('/system/dict/type/optionselect')
 }

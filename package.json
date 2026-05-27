@@ -56,5 +56,7 @@
     "commitizen": {
       "path": "node_modules/cz-git"
     }
+  },
+  "dependencies": {
   }
 }

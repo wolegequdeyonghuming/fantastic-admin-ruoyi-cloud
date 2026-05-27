@@ -21,6 +21,7 @@
     "@vueuse/core": "catalog:",
     "@vueuse/integrations": "catalog:",
     "@zumer/snapdom": "catalog:",
+    "await-to-js": "^3.0.0",
     "axios": "catalog:",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
@@ -49,6 +50,7 @@
     "vconsole": "catalog:",
     "vee-validate": "catalog:",
     "vue": "catalog:",
+    "vue-cropper": "catalog:",
     "vue-router": "catalog:",
     "zod": "catalog:"
   },
@@ -81,6 +83,8 @@
     "vite-plugin-env-parse": "catalog:",
     "vite-plugin-fake-server": "catalog:",
     "vite-plugin-vue-devtools": "catalog:",
-    "vue-tsc": "catalog:"
+    "vue-json-pretty": "catalog:",
+    "vue-tsc": "catalog:",
+    "vue-types": "catalog:"
   }
 }

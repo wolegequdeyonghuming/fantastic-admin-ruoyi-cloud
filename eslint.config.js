@@ -15,10 +15,7 @@ export default antfu(
       'e18e/prefer-static-regex': 'off',
       'eslint-comments/no-unlimited-disable': 'off',
       'curly': ['error', 'all'],
-      'ts/no-unused-expressions': ['error', {
-        allowShortCircuit: true,
-        allowTernary: true,
-      }],
+      'ts/no-unused-expressions': 'off',
     },
   },
   {

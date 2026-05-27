@@ -1,6 +1,6 @@
-import api from '@/api'
 import type { OperLogQuery, OperLogVO } from './types'
 import type { PageResponse } from '@/types/ruoyi/common'
+import api from '@/api'
 
 // 查询操作日志列表
 export function list(query: OperLogQuery) {

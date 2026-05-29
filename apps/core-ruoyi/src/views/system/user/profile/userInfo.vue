@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import type { UserForm } from '@/api/modules/system/user/types'
 import { updateUserProfile } from '@/api/modules/system/user'
-import { propTypes } from '@/utils/propTypes'
 
 defineOptions({
   name: 'UserInfo',
 })
 
-const props = defineProps({
-  user: propTypes.any.isRequired,
-})
+const props = defineProps<{
+  user: Partial<UserForm>
+}>()
 const userForm = computed(() => props.user)
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const { success } = useFaToast()

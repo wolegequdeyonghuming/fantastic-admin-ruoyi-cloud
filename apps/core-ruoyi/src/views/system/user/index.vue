@@ -106,7 +106,7 @@ const initFormData: UserForm = {
 }
 
 // 动态密码验证函数
-function validatePassword(rule: any, value: any, callback: any) {
+function validatePassword(rule: unknown, value: string, callback: (error?: Error) => void) {
   if (!value) {
     callback(new Error('用户密码不能为空'))
   }
@@ -186,7 +186,7 @@ const data = reactive<PageData<UserForm, UserQuery>>(initData)
 const { queryParams, form, rules } = toRefs<PageData<UserForm, UserQuery>>(data)
 
 /** 通过条件过滤节点  */
-function filterNode(value: string, data: any) {
+function filterNode(value: string, data: { label?: string }) {
   if (!value) {
     return true
   }
@@ -204,7 +204,7 @@ watchEffect(
 )
 
 /** 添加日期范围到查询参数 */
-function addDateRange(params: any, range: [string, string]) {
+function addDateRange(params: Record<string, unknown>, range: [string, string]) {
   const search = { ...params }
   if (range && range.length === 2) {
     search.beginTime = range[0]

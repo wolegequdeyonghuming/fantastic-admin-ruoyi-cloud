@@ -7,12 +7,20 @@ defineOptions({
   name: 'OnlineDevice',
 })
 
-const props = defineProps({
-  devices: {
-    type: Array,
-    required: true,
-  },
-})
+const props = defineProps<{
+  devices: OnlineDeviceVO[]
+}>()
+
+interface OnlineDeviceVO {
+  tokenId: string
+  deviceType?: string
+  ipaddr?: string
+  loginLocation?: string
+  os?: string
+  browser?: string
+  loginTime?: string
+}
+
 const { confirm } = useFaModal()
 const { success, error } = useFaToast()
 const { getDictOptions, parseTime } = useDict()
@@ -21,7 +29,7 @@ const sysDeviceTypeOptions = getDictOptions('sys_device_type')
 
 const devices = computed(() => props.devices)
 
-async function handldDelOnline(row: any) {
+async function handldDelOnline(row: OnlineDeviceVO) {
   try {
     await confirm({
       title: '系统提示',

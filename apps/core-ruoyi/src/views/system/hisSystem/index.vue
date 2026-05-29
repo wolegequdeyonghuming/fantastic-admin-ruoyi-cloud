@@ -52,7 +52,7 @@ const initFormData: SystemForm = {
 
 const form = reactive<SystemForm>({ ...initFormData })
 
-const systemData = ref<any[]>([])
+const systemData = ref<unknown[]>([])
 
 const queryParams = reactive<SystemQuery>({
   pageNum: 1,
@@ -71,8 +71,8 @@ const rules = {
 }
 
 function getMenu(path: string) {
-  listMenu({ systemCode: 'history', path }).then((res: any) => {
-    systemData.value = res.data
+  listMenu({ systemCode: 'history', path }).then((res) => {
+    systemData.value = res.data as unknown[]
   })
 }
 
@@ -108,7 +108,7 @@ function resetQuery() {
   handleQuery()
 }
 
-function dateRangeChange(value: any) {
+function dateRangeChange(value: [string, string]) {
   form.startDate = value[0]
   form.endDate = value[1]
 }

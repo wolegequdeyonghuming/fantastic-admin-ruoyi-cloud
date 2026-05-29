@@ -9,6 +9,18 @@ defineOptions({
   name: 'SubSystem',
 })
 
+interface SubSystemVO {
+  id?: number | string
+  systemName?: string
+  systemCode?: string
+  systemIcon?: string
+  systemSort?: number
+  systemStatus?: string
+  isFrame?: string
+  component?: string
+  perms?: string
+}
+
 const { confirm } = useFaModal()
 const { success } = useFaToast()
 const { getDictOptions } = useDict()
@@ -18,7 +30,7 @@ const sysNormalDisableOptions = getDictOptions('sys_normal_disable')
 const router = useRouter()
 
 const addDialogVisible = ref(false)
-const pagedList = ref<any[]>([])
+const pagedList = ref<SubSystemVO[]>([])
 const showSearch = ref(true)
 
 const queryParams = reactive({
@@ -32,7 +44,7 @@ async function getList() {
   loading.value = true
   try {
     const res = await getChildSystemList(queryParams)
-    pagedList.value = res.rows
+    pagedList.value = res.rows as SubSystemVO[]
     total.value = res.total
   }
   finally {
@@ -44,22 +56,22 @@ onMounted(() => {
   getList()
 })
 
-function handleAddMenu(row: any) {
+function handleAddMenu(row: SubSystemVO) {
   router.push({ path: '/system/menu', query: { systemCode: row.systemCode } })
 }
 
-const itemData = ref<any>({})
+const itemData = ref<SubSystemVO | null>({})
 function handleAdd() {
   itemData.value = null
   addDialogVisible.value = true
 }
 
-function handleUpdate(row: any) {
+function handleUpdate(row: SubSystemVO) {
   itemData.value = Object.assign({}, row)
   addDialogVisible.value = true
 }
 
-async function handleDelete(row?: any) {
+async function handleDelete(row?: SubSystemVO) {
   try {
     await confirm({
       title: '系统提示',

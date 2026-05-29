@@ -103,9 +103,9 @@ function vendorManagement(row: SystemTypeVO) {
   })
 }
 
-const systemData = ref<any[]>([])
-listMenuList({ systemCode: 'history' }).then((res: any) => {
-  systemData.value = res.data
+const systemData = ref<unknown[]>([])
+listMenuList({ systemCode: 'history' }).then((res) => {
+  systemData.value = res.data as unknown[]
 })
 
 function handleSelectionChange(selection: SystemTypeVO[]) {

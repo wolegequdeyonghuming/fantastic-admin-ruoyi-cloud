@@ -67,7 +67,7 @@ async function getList() {
   try {
     const res = await getConfigKey('sys.oss.previewListResource')
     previewListResource.value = res?.data === undefined ? true : res.data === 'true'
-    const params: any = { ...queryParams }
+    const params: Record<string, unknown> = { ...queryParams }
     if (dateRangeCreateTime.value[0]) {
       params.beginCreateTime = dateRangeCreateTime.value[0]
       params.endCreateTime = dateRangeCreateTime.value[1]
@@ -118,15 +118,16 @@ function handleSelectionChange(selection: OssVO[]) {
   multiple.value = !selection.length
 }
 
-function handleHeaderClass({ column }: any): any {
-  column.order = column.multiOrder
+function handleHeaderClass({ column }: { column: Record<string, unknown> }): string {
+  column.order = column.multiOrder as string
+  return ''
 }
 
-function handleHeaderCLick(column: any) {
+function handleHeaderCLick(column: Record<string, unknown>) {
   if (column.sortable !== 'custom') {
     return
   }
-  switch (column.multiOrder) {
+  switch (column.multiOrder as string) {
     case 'descending':
       column.multiOrder = 'ascending'
       break
@@ -137,7 +138,7 @@ function handleHeaderCLick(column: any) {
       column.multiOrder = 'descending'
       break
   }
-  handleOrderChange(column.property, column.multiOrder)
+  handleOrderChange(column.property as string, column.multiOrder as string)
 }
 
 function handleOrderChange(prop: string, order: string) {

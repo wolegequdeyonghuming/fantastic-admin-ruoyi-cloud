@@ -96,19 +96,19 @@ const rules = {
   ],
 }
 
-function handleTree<T extends Record<string, any>>(data: T[], id: string): T[] {
-  const map: Record<string, any> = {}
+function handleTree<T extends Record<string, unknown>>(data: T[], id: string): T[] {
+  const map: Record<string, T> = {}
   data.forEach((item) => {
-    map[item[id]] = item
+    map[String(item[id])] = item
   })
   const roots: T[] = []
   data.forEach((item) => {
-    const parent = map[item.parentId]
-    if (parent && item.parentId !== item[id]) {
-      if (!parent.children) {
-        parent.children = []
+    const parent = map[String(item.parentId as string)]
+    if (parent && String(item.parentId) !== String(item[id])) {
+      if (!Array.isArray((parent as Record<string, unknown>).children)) {
+        (parent as Record<string, unknown>).children = []
       }
-      parent.children.push(item)
+      ;(parent as Record<string, unknown>).children!.push(item)
     }
     else {
       roots.push(item)
@@ -124,7 +124,7 @@ async function getList() {
   loading.value = false
 }
 
-async function getDeptAllUser(deptId: any) {
+async function getDeptAllUser(deptId: number | string) {
   if (deptId !== null && deptId !== '' && deptId !== undefined) {
     const res = await listUserByDeptId(deptId)
     deptUserList.value = res.data

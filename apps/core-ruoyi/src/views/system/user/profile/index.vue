@@ -16,8 +16,8 @@ interface State {
   user: Partial<UserVO>
   roleGroup: string
   postGroup: string
-  auths: any
-  devices: any
+  auths: unknown[]
+  devices: unknown[]
 }
 const state = ref<State>({
   user: {},

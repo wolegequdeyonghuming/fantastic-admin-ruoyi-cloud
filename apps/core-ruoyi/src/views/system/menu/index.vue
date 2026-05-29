@@ -83,7 +83,7 @@ const { queryParams, form, rules }
   = toRefs<PageData<MenuForm, MenuQuery>>(data)
 
 /** 获取子菜单列表 */
-async function getChildrenList(row: any, treeNode: unknown, resolve: (data: any[]) => void) {
+async function getChildrenList(row: MenuVO, treeNode: unknown, resolve: (data: MenuVO[]) => void) {
   menuExpandMap.value[row.menuId] = { row, treeNode, resolve }
   const children = menuChildrenListMap.value[row.menuId] || []
   // 菜单的子菜单清空后关闭展开
@@ -95,7 +95,7 @@ async function getChildrenList(row: any, treeNode: unknown, resolve: (data: any[
 }
 
 /** 收起菜单时从menuExpandMap中删除对应菜单id数据 */
-async function expandMenuHandle(row: any, expanded: boolean) {
+async function expandMenuHandle(row: MenuVO, expanded: boolean) {
   if (!expanded) {
     menuExpandMap.value[row.menuId] = undefined
   }

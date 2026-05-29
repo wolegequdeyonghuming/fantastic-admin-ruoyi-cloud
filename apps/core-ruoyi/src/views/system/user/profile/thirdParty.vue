@@ -1,22 +1,30 @@
 <script setup lang="ts">
 import { authRouterUrl, authUnlock } from '@/api/modules/system/social/auth'
 import { useAppAccountStore } from '@/store/modules/app/account'
-import { propTypes } from '@/utils/propTypes'
 
 defineOptions({
   name: 'ThirdParty',
 })
 
-const props = defineProps({
-  auths: propTypes.any.isRequired,
-})
+const props = defineProps<{
+  auths: AuthVO[]
+}>()
+
+interface AuthVO {
+  id: string | number
+  source: string
+  avatar?: string
+  userName?: string
+  createTime?: string
+}
+
 const { success, error } = useFaToast()
 const { confirm } = useFaModal()
 const appAccountStore = useAppAccountStore()
 
 const auths = computed(() => props.auths)
 
-async function unlockAuth(row: any) {
+async function unlockAuth(row: AuthVO) {
   try {
     await confirm({
       title: '系统提示',
@@ -36,7 +44,7 @@ async function unlockAuth(row: any) {
 }
 
 function authUrl(source: string) {
-  authRouterUrl(source, appAccountStore.tenantId).then((res: any) => {
+  authRouterUrl(source, appAccountStore.tenantId).then((res) => {
     if (res.code === 200) {
       window.location.href = res.data
     }
@@ -112,14 +120,11 @@ function authUrl(source: string) {
 .user-bind .third-app {
   float: left;
   display: -webkit-box;
-  display: flexbox;
   display: flex;
-  flex-direction: column;
   flex-direction: column;
   align-items: center;
   min-width: 80px;
   -webkit-box-orient: vertical;
-  align-items: center;
   -ms-flex-align: center;
 }
 
@@ -143,24 +148,24 @@ a {
 .provider-desc {
   font-family:
     -apple-system,
- BlinkMacSystemFont,
- "Segoe UI",
- Helvetica,
- Arial,
- "Apple Color Emoji",
- "Segoe UI Emoji",
- "Segoe UI Symbol",
- "Liberation Sans",
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Helvetica,
+    Arial,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Liberation Sans",
     "PingFang SC",
- "Microsoft YaHei",
- "Hiragino Sans GB",
- "Wenquanyi Micro Hei",
- "WenQuanYi Zen Hei",
- "ST Heiti",
- SimHei,
- SimSun,
+    "Microsoft YaHei",
+    "Hiragino Sans GB",
+    "Wenquanyi Micro Hei",
+    "WenQuanYi Zen Hei",
+    "ST Heiti",
+    SimHei,
+    SimSun,
     "WenQuanYi Zen Hei Sharp",
- sans-serif;
+    sans-serif;
   font-size: 1.071rem;
 }
 

@@ -177,7 +177,7 @@ function handleAuthUser(row: RoleVO) {
   router.push(`/system/role-auth/user/${row.roleId}`)
 }
 
-function getDeptAllCheckedKeys(): any {
+function getDeptAllCheckedKeys(): (string | number)[] | undefined {
   const checkedKeys = deptRef.value?.getCheckedKeys()
   const halfCheckedKeys = deptRef.value?.getHalfCheckedKeys()
   if (halfCheckedKeys) {
@@ -197,21 +197,21 @@ async function getRoleDeptTreeSelect(roleId: string | number) {
   return res.data
 }
 
-function handleCheckedTreeExpand(value: booleanapi) {
+function handleCheckedTreeExpand(value: boolean | string | number, _type?: string) {
   const treeList = deptOptions.value
   for (let i = 0; i < treeList.length; i++) {
     if (deptRef.value) {
-      deptRef.value.store.nodesMap[treeList[i].id].expanded = value
+      deptRef.value.store.nodesMap[treeList[i].id].expanded = value as boolean
     }
   }
 }
 
-function handleCheckedTreeNodeAll(value: anyapi) {
+function handleCheckedTreeNodeAll(value: boolean | string | number, _type?: string) {
   deptRef.value?.setCheckedNodes(value ? (deptOptions.value as any) : [])
 }
 
-function handleCheckedTreeConnect(value: anyapi) {
-  form.deptCheckStrictly = value
+function handleCheckedTreeConnect(value: boolean | string | number, _type?: string) {
+  form.deptCheckStrictly = value as boolean
 }
 
 function dataScopeSelectChange(value: string) {

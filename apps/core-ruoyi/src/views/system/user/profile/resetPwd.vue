@@ -15,7 +15,7 @@ const user = ref<ResetPwdForm>({
   confirmPassword: '',
 })
 
-function equalToPassword(rule: any, value: string, callback: any) {
+function equalToPassword(rule: any, value: string, callback: (error?: Error) => void) {
   if (user.value.newPassword !== value) {
     callback(new Error('两次输入的密码不一致'))
   }

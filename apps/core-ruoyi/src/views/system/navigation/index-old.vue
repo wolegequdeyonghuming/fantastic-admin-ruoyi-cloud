@@ -59,12 +59,12 @@ function handleAdd() {
 }
 
 /** 修改按钮操作 */
-function handleUpdate(row: any) {
+function handleUpdate(row: { id?: number | string, navName?: string }) {
   ElMessage.info(`编辑功能待实现：${row.navName}`)
 }
 
 /** 删除按钮操作 */
-function handleDelete(row: any) {
+function handleDelete(row: { id?: number | string, navName?: string }) {
   ElMessageBox.confirm(`是否确认删除导航"${row.navName}"?`, '警告', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
@@ -76,7 +76,7 @@ function handleDelete(row: any) {
 }
 
 /** 菜单管理 */
-function handleMenu(row: any) {
+function handleMenu(row: { id?: number | string, navName?: string }) {
   ElMessage.info(`菜单管理功能待实现：${row.navName}`)
 }
 

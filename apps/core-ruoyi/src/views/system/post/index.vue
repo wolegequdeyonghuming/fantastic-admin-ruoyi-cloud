@@ -69,7 +69,7 @@ const rules = {
   postSort: [{ required: true, message: '岗位顺序不能为空', trigger: 'blur' }],
 }
 
-function filterNode(value: string, data: any) {
+function filterNode(value: string, data: { label?: string }) {
   if (!value) {
     return true
   }

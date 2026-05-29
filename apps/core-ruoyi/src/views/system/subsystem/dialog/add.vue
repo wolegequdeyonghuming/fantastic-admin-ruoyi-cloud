@@ -17,9 +17,20 @@ const { addDialogVisible } = toRefs(props)
 
 const sysNormalDisableOptions = getDictOptions('sys_normal_disable')
 
+interface SubSystemForm {
+  systemName: string
+  systemCode: string
+  systemIcon: string
+  systemSort: number
+  isFrame: string
+  systemStatus: string
+  systemFrame: string
+  [key: string]: any
+}
+
 interface Props {
   addDialogVisible?: boolean
-  itemData?: any
+  itemData?: SubSystemForm | null
 }
 
 const form = reactive({

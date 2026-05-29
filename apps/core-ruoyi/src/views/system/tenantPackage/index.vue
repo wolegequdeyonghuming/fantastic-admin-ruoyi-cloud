@@ -71,7 +71,7 @@ const rules = {
   ],
 }
 
-function getMenuAllCheckedKeys(): any {
+function getMenuAllCheckedKeys(): (string | number)[] | undefined {
   const checkedKeys = menuTreeRef.value?.getCheckedKeys()
   const halfCheckedKeys = menuTreeRef.value?.getHalfCheckedKeys()
   if (halfCheckedKeys) {
@@ -151,13 +151,13 @@ function handleCheckedTreeExpand(value: boolean) {
   }
 }
 
-function handleCheckedTreeNodeAll(value: any, type: string) {
+function handleCheckedTreeNodeAll(value: boolean | string | number, type: string) {
   if (type === 'menu') {
     menuTreeRef.value?.setCheckedNodes(value ? (menuOptions.value as any) : [])
   }
 }
 
-function handleCheckedTreeConnect(value: any, type: string) {
+function handleCheckedTreeConnect(value: boolean | string | number, type: string) {
   if (type === 'menu') {
     form.menuCheckStrictly = value as boolean
   }

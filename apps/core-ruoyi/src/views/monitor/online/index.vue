@@ -133,7 +133,7 @@ onMounted(() => {
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <FaButton
-            v-hasPermi="['monitor:online:forceLogout']"
+            v-auth="['monitor:online:forceLogout']"
             variant="destructive"
             size="sm"
             @click="handleForceLogout(scope.row)"

@@ -197,7 +197,7 @@ onMounted(() => {
     <div class="my-4 flex items-center justify-between">
       <div class="flex gap-2">
         <FaButton
-          v-hasPermi="['monitor:operlog:remove']"
+          v-auth="['monitor:operlog:remove']"
           variant="destructive"
           :disabled="!selectedIds.length"
           @click="handleDelete()"
@@ -205,11 +205,11 @@ onMounted(() => {
           <FaIcon name="i-lucide:trash-2" class="mr-1" />
           删除
         </FaButton>
-        <FaButton v-hasPermi="['monitor:operlog:remove']" variant="outline" @click="handleClean">
+        <FaButton v-auth="['monitor:operlog:remove']" variant="outline" @click="handleClean">
           <FaIcon name="i-lucide:alert-triangle" class="mr-1" />
           清空
         </FaButton>
-        <FaButton v-hasPermi="['monitor:operlog:export']" variant="outline" @click="handleExport">
+        <FaButton v-auth="['monitor:operlog:export']" variant="outline" @click="handleExport">
           <FaIcon name="i-lucide:download" class="mr-1" />
           导出
         </FaButton>
@@ -272,7 +272,7 @@ onMounted(() => {
       <el-table-column label="操作" fixed="right" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-tooltip content="详细" placement="top">
-            <FaButton v-hasPermi="['monitor:operlog:query']" variant="ghost" size="icon" @click="handleView(scope.row)">
+            <FaButton v-auth="['monitor:operlog:query']" variant="ghost" size="icon" @click="handleView(scope.row)">
               <FaIcon name="i-lucide:eye" />
             </FaButton>
           </el-tooltip>

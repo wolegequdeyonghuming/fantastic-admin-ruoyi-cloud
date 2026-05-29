@@ -622,7 +622,7 @@ async function handleDeptChange(value: number | string) {
             <el-row :gutter="10">
               <el-col :span="1.5">
                 <el-button
-                  v-hasPermi="['system:user:add']"
+                  v-auth="['system:user:add']"
                   type="primary"
                   plain
                   @click="handleAdd()"
@@ -633,7 +633,7 @@ async function handleDeptChange(value: number | string) {
               </el-col>
               <el-col :span="1.5">
                 <el-button
-                  v-hasPermi="['system:user:edit']"
+                  v-auth="['system:user:edit']"
                   type="success"
                   plain
                   :disabled="single"
@@ -645,7 +645,7 @@ async function handleDeptChange(value: number | string) {
               </el-col>
               <el-col :span="1.5">
                 <el-button
-                  v-hasPermi="['system:user:remove']"
+                  v-auth="['system:user:remove']"
                   type="danger"
                   plain
                   :disabled="multiple"
@@ -775,7 +775,7 @@ async function handleDeptChange(value: number | string) {
               <template #default="scope">
                 <el-tooltip content="修改" placement="top">
                   <el-button
-                    v-hasPermi="['system:user:edit']"
+                    v-auth="['system:user:edit']"
                     link
                     type="primary"
                     @click="handleUpdate(scope.row)"
@@ -785,7 +785,7 @@ async function handleDeptChange(value: number | string) {
                 </el-tooltip>
                 <el-tooltip content="删除" placement="top">
                   <el-button
-                    v-hasPermi="['system:user:remove']"
+                    v-auth="['system:user:remove']"
                     link
                     type="primary"
                     @click="handleDelete(scope.row)"
@@ -796,7 +796,7 @@ async function handleDeptChange(value: number | string) {
 
                 <el-tooltip content="重置密码" placement="top">
                   <el-button
-                    v-hasPermi="['system:user:resetPwd']"
+                    v-auth="['system:user:resetPwd']"
                     link
                     type="primary"
                     @click="handleResetPwd(scope.row)"
@@ -807,7 +807,7 @@ async function handleDeptChange(value: number | string) {
 
                 <el-tooltip content="分配角色" placement="top">
                   <el-button
-                    v-hasPermi="['system:user:edit']"
+                    v-auth="['system:user:edit']"
                     link
                     type="primary"
                     @click="handleAuthRole(scope.row)"

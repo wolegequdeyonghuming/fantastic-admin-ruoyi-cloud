@@ -3,7 +3,9 @@ import type { OssForm, OssQuery, OssVO } from '@/api/modules/system/oss/types'
 import { RefreshRight, Search } from '@element-plus/icons-vue'
 import { getConfigKey, updateConfigByKey } from '@/api/modules/system/config'
 import { delOss, listOss } from '@/api/modules/system/oss'
+import FileUpload from '@/components/RuoYi/FileUpload/index.vue'
 import ImagePreview from '@/components/RuoYi/ImagePreview/index.vue'
+import ImageUpload from '@/components/RuoYi/ImageUpload/index.vue'
 import RightToolbar from '@/components/RuoYi/RightToolbar/index.vue'
 import { useDict } from '@/composables/useDict'
 
@@ -276,23 +278,23 @@ onMounted(() => {
 
     <div class="my-4 flex items-center justify-between">
       <div class="flex gap-2">
-        <FaButton v-hasPermi="['system:oss:upload']" @click="handleFile">
+        <FaButton v-auth="['system:oss:upload']" @click="handleFile">
           <FaIcon name="i-lucide:upload" class="mr-1" /> 上传文件
         </FaButton>
-        <FaButton v-hasPermi="['system:oss:upload']" @click="handleImage">
+        <FaButton v-auth="['system:oss:upload']" @click="handleImage">
           <FaIcon name="i-lucide:image" class="mr-1" /> 上传图片
         </FaButton>
-        <FaButton v-hasPermi="['system:oss:remove']" variant="destructive" :disabled="multiple" @click="handleDelete()">
+        <FaButton v-auth="['system:oss:remove']" variant="destructive" :disabled="multiple" @click="handleDelete()">
           <FaIcon name="i-lucide:trash-2" class="mr-1" /> 删除
         </FaButton>
         <FaButton
-          v-hasPermi="['system:oss:edit']"
+          v-auth="['system:oss:edit']"
           :variant="previewListResource ? 'destructive' : 'warning'"
           @click="handlePreviewListResource(!previewListResource)"
         >
           预览开关 : {{ previewListResource ? '禁用' : '启用' }}
         </FaButton>
-        <FaButton v-hasPermi="['system:ossConfig:list']" variant="outline" @click="handleOssConfig">
+        <FaButton v-auth="['system:ossConfig:list']" variant="outline" @click="handleOssConfig">
           <FaIcon name="i-lucide:settings" class="mr-1" /> 配置管理
         </FaButton>
       </div>
@@ -335,10 +337,10 @@ onMounted(() => {
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-tooltip content="下载" placement="top">
-            <el-button v-hasPermi="['system:oss:download']" link type="primary" icon="Download" @click="handleDownload(scope.row)" />
+            <el-button v-auth="['system:oss:download']" link type="primary" icon="Download" @click="handleDownload(scope.row)" />
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
-            <el-button v-hasPermi="['system:oss:remove']" link type="primary" icon="Delete" @click="handleDelete(scope.row)" />
+            <el-button v-auth="['system:oss:remove']" link type="primary" icon="Delete" @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -349,8 +351,8 @@ onMounted(() => {
     <el-dialog v-model="dialog.visible" :title="dialog.title" width="500px" append-to-body>
       <el-form ref="ossFormRef" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="文件名">
-          <fileUpload v-if="type === 0" v-model="form.file" />
-          <imageUpload v-if="type === 1" v-model="form.file" />
+          <FileUpload v-if="type === 0" v-model="form.file" />
+          <ImageUpload v-if="type === 1" v-model="form.file" />
         </el-form-item>
       </el-form>
       <template #footer>

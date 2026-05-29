@@ -343,7 +343,7 @@ onMounted(() => {
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
             <el-button
-              v-hasPermi="['system:tenant:add']"
+              v-auth="['system:tenant:add']"
               type="primary"
               plain
               icon="Plus"
@@ -354,7 +354,7 @@ onMounted(() => {
           </el-col>
           <el-col :span="1.5">
             <el-button
-              v-hasPermi="['system:tenant:edit']"
+              v-auth="['system:tenant:edit']"
               type="success"
               plain
               icon="Edit"
@@ -366,7 +366,7 @@ onMounted(() => {
           </el-col>
           <el-col :span="1.5">
             <el-button
-              v-hasPermi="['system:tenant:remove']"
+              v-auth="['system:tenant:remove']"
               type="danger"
               plain
               icon="Delete"
@@ -378,7 +378,7 @@ onMounted(() => {
           </el-col>
           <el-col :span="1.5">
             <el-button
-              v-hasPermi="['system:tenant:export']"
+              v-auth="['system:tenant:export']"
               type="warning"
               plain
               icon="Download"
@@ -464,7 +464,7 @@ onMounted(() => {
           <template #default="scope">
             <el-tooltip content="修改" placement="top">
               <el-button
-                v-hasPermi="['system:tenant:edit']"
+                v-auth="['system:tenant:edit']"
                 link
                 type="primary"
                 icon="Edit"
@@ -473,7 +473,7 @@ onMounted(() => {
             </el-tooltip>
             <el-tooltip content="同步套餐" placement="top">
               <el-button
-                v-hasPermi="['system:tenant:edit']"
+                v-auth="['system:tenant:edit']"
                 link
                 type="primary"
                 icon="Refresh"
@@ -482,7 +482,7 @@ onMounted(() => {
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
               <el-button
-                v-hasPermi="['system:tenant:remove']"
+                v-auth="['system:tenant:remove']"
                 link
                 type="primary"
                 icon="Delete"

@@ -313,16 +313,16 @@ onMounted(() => {
 
     <div class="my-4 flex items-center justify-between">
       <div class="flex gap-2">
-        <FaButton v-hasPermi="['system:role:add']" @click="handleAdd()">
+        <FaButton v-auth="['system:role:add']" @click="handleAdd()">
           <FaIcon name="i-lucide:plus" class="mr-1" /> 新增
         </FaButton>
-        <FaButton v-hasPermi="['system:role:edit']" variant="secondary" :disabled="single" @click="handleAuthMenuCheck()">
+        <FaButton v-auth="['system:role:edit']" variant="secondary" :disabled="single" @click="handleAuthMenuCheck()">
           <FaIcon name="i-lucide:edit" class="mr-1" /> 修改
         </FaButton>
-        <FaButton v-hasPermi="['system:role:delete']" variant="destructive" :disabled="ids.length === 0" @click="handleDelete()">
+        <FaButton v-auth="['system:role:delete']" variant="destructive" :disabled="ids.length === 0" @click="handleDelete()">
           <FaIcon name="i-lucide:trash-2" class="mr-1" /> 删除
         </FaButton>
-        <FaButton v-hasPermi="['system:role:export']" variant="outline" @click="handleExport">
+        <FaButton v-auth="['system:role:export']" variant="outline" @click="handleExport">
           <FaIcon name="i-lucide:download" class="mr-1" /> 导出
         </FaButton>
       </div>
@@ -376,7 +376,7 @@ onMounted(() => {
         <template #default="scope">
           <el-tooltip content="修改" placement="top">
             <el-button
-              v-hasPermi="['system:role:edit']"
+              v-auth="['system:role:edit']"
               link
               type="primary"
               icon="Edit"
@@ -385,7 +385,7 @@ onMounted(() => {
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
             <el-button
-              v-hasPermi="['system:role:remove']"
+              v-auth="['system:role:remove']"
               link
               type="primary"
               icon="Delete"
@@ -394,7 +394,7 @@ onMounted(() => {
           </el-tooltip>
           <el-tooltip content="数据权限" placement="top">
             <el-button
-              v-hasPermi="['system:role:edit']"
+              v-auth="['system:role:edit']"
               link
               type="primary"
               icon="CircleCheck"
@@ -403,7 +403,7 @@ onMounted(() => {
           </el-tooltip>
           <el-tooltip content="分配用户" placement="top">
             <el-button
-              v-hasPermi="['system:role:edit']"
+              v-auth="['system:role:edit']"
               link
               type="primary"
               icon="User"

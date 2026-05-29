@@ -198,7 +198,7 @@ onMounted(() => {
     <div class="my-4 flex items-center justify-between">
       <div class="flex gap-2">
         <FaButton
-          v-hasPermi="['monitor:logininfor:remove']"
+          v-auth="['monitor:logininfor:remove']"
           variant="destructive"
           :disabled="!selectedIds.length"
           @click="handleDelete()"
@@ -206,12 +206,12 @@ onMounted(() => {
           <FaIcon name="i-lucide:trash-2" class="mr-1" />
           删除
         </FaButton>
-        <FaButton v-hasPermi="['monitor:logininfor:remove']" variant="outline" @click="handleClean">
+        <FaButton v-auth="['monitor:logininfor:remove']" variant="outline" @click="handleClean">
           <FaIcon name="i-lucide:alert-triangle" class="mr-1" />
           清空
         </FaButton>
         <FaButton
-          v-hasPermi="['monitor:logininfor:unlock']"
+          v-auth="['monitor:logininfor:unlock']"
           variant="outline"
           :disabled="!selectedNames.length"
           @click="handleUnlock"
@@ -219,7 +219,7 @@ onMounted(() => {
           <FaIcon name="i-lucide:unlock" class="mr-1" />
           解锁
         </FaButton>
-        <FaButton v-hasPermi="['monitor:logininfor:export']" variant="outline" @click="handleExport">
+        <FaButton v-auth="['monitor:logininfor:export']" variant="outline" @click="handleExport">
           <FaIcon name="i-lucide:download" class="mr-1" />
           导出
         </FaButton>

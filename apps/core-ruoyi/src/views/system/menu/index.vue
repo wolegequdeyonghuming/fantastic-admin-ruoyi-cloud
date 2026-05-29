@@ -8,6 +8,7 @@ import {
   listMenu,
   updateMenu,
 } from '@/api/modules/system/menu'
+import SvgIcon from '@/components/RuoYi/SvgIcon/index.vue'
 import { useDict } from '@/composables/useDict'
 import { MenuTypeEnum } from '@/enums/MenuTypeEnum.ts'
 
@@ -332,7 +333,7 @@ onMounted(() => {
         <el-row :gutter="10">
           <el-col :span="1.5">
             <el-button
-              v-hasPermi="['system:menu:add']"
+              v-auth="['system:menu:add']"
               type="primary"
               plain
               icon="Plus"
@@ -343,7 +344,7 @@ onMounted(() => {
           </el-col>
           <el-col :span="1.5">
             <el-button
-              v-hasPermi="['system:menu:remove']"
+              v-auth="['system:menu:remove']"
               type="danger"
               plain
               icon="Delete"
@@ -386,7 +387,7 @@ onMounted(() => {
         />
         <el-table-column prop="icon" label="图标" align="center" width="120">
           <template #default="scope">
-            <svg-icon :icon-class="scope.row.icon" />
+            <SvgIcon :icon-class="scope.row.icon" />
           </template>
         </el-table-column>
         <el-table-column
@@ -418,7 +419,7 @@ onMounted(() => {
           <template #default="scope">
             <el-tooltip content="修改" placement="top">
               <el-button
-                v-hasPermi="['system:menu:edit']"
+                v-auth="['system:menu:edit']"
                 link
                 type="primary"
                 icon="Edit"
@@ -427,7 +428,7 @@ onMounted(() => {
             </el-tooltip>
             <el-tooltip content="新增" placement="top">
               <el-button
-                v-hasPermi="['system:menu:add']"
+                v-auth="['system:menu:add']"
                 link
                 type="primary"
                 icon="Plus"
@@ -436,7 +437,7 @@ onMounted(() => {
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
               <el-button
-                v-hasPermi="['system:menu:remove']"
+                v-auth="['system:menu:remove']"
                 link
                 type="primary"
                 icon="Delete"

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { authRouterUrl, authUnlock } from '@/api/modules/system/social/auth'
+import SvgIcon from '@/components/RuoYi/SvgIcon/index.vue'
 import { useAppAccountStore } from '@/store/modules/app/account'
 
 defineOptions({
@@ -83,31 +84,31 @@ function authUrl(source: string) {
       <div id="authlist" class="user-bind">
         <a class="third-app" href="#" title="使用 微信 账号授权登录" @click="authUrl('wechat')">
           <div class="git-other-login-icon">
-            <svg-icon icon-class="wechat" />
+            <SvgIcon icon-class="wechat" />
           </div>
           <span class="app-name">WeiXin</span>
         </a>
         <a class="third-app" href="#" title="使用 MaxKey 账号授权登录" @click="authUrl('maxkey')">
           <div class="git-other-login-icon">
-            <svg-icon icon-class="maxkey" />
+            <SvgIcon icon-class="maxkey" />
           </div>
           <span class="app-name">MaxKey</span>
         </a>
         <a class="third-app" href="#" title="使用 TopIam 账号授权登录" @click="authUrl('topiam')">
           <div class="git-other-login-icon">
-            <svg-icon icon-class="topiam" />
+            <SvgIcon icon-class="topiam" />
           </div>
           <span class="app-name">TopIam</span>
         </a>
         <a class="third-app" href="#" title="使用 Gitee 账号授权登录" @click="authUrl('gitee')">
           <div class="git-other-login-icon">
-            <svg-icon icon-class="gitee" />
+            <SvgIcon icon-class="gitee" />
           </div>
           <span class="app-name">Gitee</span>
         </a>
         <a class="third-app" href="#" title="使用 GitHub 账号授权登录" @click="authUrl('github')">
           <div class="git-other-login-icon">
-            <svg-icon icon-class="github" />
+            <SvgIcon icon-class="github" />
           </div>
           <span class="app-name">Github</span>
         </a>

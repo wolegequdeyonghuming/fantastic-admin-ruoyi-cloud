@@ -209,15 +209,15 @@ onMounted(() => {
     <!-- 操作栏 -->
     <div class="my-4 flex items-center justify-between">
       <div class="flex gap-2">
-        <FaButton v-hasPermi="['system:notice:add']" @click="handleAdd">
+        <FaButton v-auth="['system:notice:add']" @click="handleAdd">
           <FaIcon name="i-lucide:plus" class="mr-1" />
           新增
         </FaButton>
-        <FaButton v-hasPermi="['system:notice:edit']" variant="secondary" :disabled="single" @click="handleUpdate()">
+        <FaButton v-auth="['system:notice:edit']" variant="secondary" :disabled="single" @click="handleUpdate()">
           <FaIcon name="i-lucide:edit" class="mr-1" />
           修改
         </FaButton>
-        <FaButton v-hasPermi="['system:notice:remove']" variant="destructive" :disabled="multiple" @click="handleDelete()">
+        <FaButton v-auth="['system:notice:remove']" variant="destructive" :disabled="multiple" @click="handleDelete()">
           <FaIcon name="i-lucide:trash-2" class="mr-1" />
           删除
         </FaButton>
@@ -248,10 +248,10 @@ onMounted(() => {
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-tooltip content="修改" placement="top">
-            <el-button v-hasPermi="['system:notice:edit']" link type="primary" icon="Edit" @click="handleUpdate(scope.row)" />
+            <el-button v-auth="['system:notice:edit']" link type="primary" icon="Edit" @click="handleUpdate(scope.row)" />
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
-            <el-button v-hasPermi="['system:notice:remove']" link type="primary" icon="Delete" @click="handleDelete(scope.row)" />
+            <el-button v-auth="['system:notice:remove']" link type="primary" icon="Delete" @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
       </el-table-column>

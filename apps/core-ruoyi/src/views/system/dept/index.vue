@@ -278,7 +278,7 @@ onMounted(() => {
 
     <div class="my-4 flex items-center justify-between">
       <div class="flex gap-2">
-        <FaButton v-hasPermi="['system:dept:add']" @click="handleAdd()">
+        <FaButton v-auth="['system:dept:add']" @click="handleAdd()">
           <FaIcon name="i-lucide:plus" class="mr-1" /> 新增
         </FaButton>
         <FaButton variant="secondary" @click="handleToggleExpandAll">
@@ -314,7 +314,7 @@ onMounted(() => {
         <template #default="scope">
           <el-tooltip content="修改" placement="top">
             <el-button
-              v-hasPermi="['system:dept:edit']"
+              v-auth="['system:dept:edit']"
               link
               type="primary"
               icon="Edit"
@@ -323,7 +323,7 @@ onMounted(() => {
           </el-tooltip>
           <el-tooltip content="新增" placement="top">
             <el-button
-              v-hasPermi="['system:dept:add']"
+              v-auth="['system:dept:add']"
               link
               type="primary"
               icon="Plus"
@@ -332,7 +332,7 @@ onMounted(() => {
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
             <el-button
-              v-hasPermi="['system:dept:remove']"
+              v-auth="['system:dept:remove']"
               link
               type="primary"
               icon="Delete"

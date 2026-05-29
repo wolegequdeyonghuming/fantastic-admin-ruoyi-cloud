@@ -2,6 +2,7 @@
 import { deleteChildSystem, getChildSystemList } from '@/api/modules/system/menu'
 import DictTag from '@/components/RuoYi/DictTag/index.vue'
 import RightToolbar from '@/components/RuoYi/RightToolbar/index.vue'
+import SvgIcon from '@/components/RuoYi/SvgIcon/index.vue'
 import { useDict } from '@/composables/useDict'
 import SubSystemDialog from './dialog/add.vue'
 
@@ -99,7 +100,7 @@ function handleClose(text: string) {
   <FaPageMain>
     <div class="my-4 flex items-center justify-between">
       <div class="flex gap-2">
-        <FaButton v-hasPermi="['system:dept:add']" @click="handleAdd()">
+        <FaButton v-auth="['system:dept:add']" @click="handleAdd()">
           <FaIcon name="i-lucide:plus" class="mr-1" /> 新增
         </FaButton>
       </div>
@@ -110,7 +111,7 @@ function handleClose(text: string) {
       <el-table-column prop="systemName" label="系统名称" :show-overflow-tooltip="true" align="center" />
       <el-table-column prop="systemIcon" label="图标" align="center">
         <template #default="scope">
-          <svg-icon :icon-class="scope.row.systemIcon" />
+          <SvgIcon :icon-class="scope.row.systemIcon" />
         </template>
       </el-table-column>
       <el-table-column prop="systemSort" label="排序" align="center" />
@@ -129,13 +130,13 @@ function handleClose(text: string) {
       <el-table-column fixed="right" label="操作" width="220" align="center">
         <template #default="scope">
           <el-tooltip content="添加菜单" placement="top">
-            <el-button v-hasPermi="['system:menu:add']" link type="primary" icon="Plus" @click="handleAddMenu(scope.row)" />
+            <el-button v-auth="['system:menu:add']" link type="primary" icon="Plus" @click="handleAddMenu(scope.row)" />
           </el-tooltip>
           <el-tooltip content="修改" placement="top">
-            <el-button v-hasPermi="['system:menu:edit']" link type="primary" icon="Edit" @click="handleUpdate(scope.row)" />
+            <el-button v-auth="['system:menu:edit']" link type="primary" icon="Edit" @click="handleUpdate(scope.row)" />
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
-            <el-button v-hasPermi="['system:menu:remove']" link type="primary" icon="Delete" @click="handleDelete(scope.row)" />
+            <el-button v-auth="['system:menu:remove']" link type="primary" icon="Delete" @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
       </el-table-column>

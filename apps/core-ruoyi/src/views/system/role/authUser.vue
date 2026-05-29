@@ -136,10 +136,10 @@ onMounted(() => {
 
     <div class="my-4 flex items-center justify-between">
       <div class="flex gap-2">
-        <FaButton v-hasPermi="['system:role:add']" @click="openSelectUser">
+        <FaButton v-auth="['system:role:add']" @click="openSelectUser">
           <FaIcon name="i-lucide:plus" class="mr-1" /> 添加用户
         </FaButton>
-        <FaButton v-hasPermi="['system:role:remove']" variant="destructive" :disabled="multiple" @click="cancelAuthUserAll">
+        <FaButton v-auth="['system:role:remove']" variant="destructive" :disabled="multiple" @click="cancelAuthUserAll">
           <FaIcon name="i-lucide:x-circle" class="mr-1" /> 批量取消授权
         </FaButton>
         <FaButton variant="outline" @click="handleClose">
@@ -168,7 +168,7 @@ onMounted(() => {
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-tooltip content="取消授权" placement="top">
-            <el-button v-hasPermi="['system:role:remove']" link type="primary" icon="CircleClose" @click="cancelAuthUser(scope.row)" />
+            <el-button v-auth="['system:role:remove']" link type="primary" icon="CircleClose" @click="cancelAuthUser(scope.row)" />
           </el-tooltip>
         </template>
       </el-table-column>

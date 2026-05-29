@@ -262,16 +262,16 @@ onMounted(() => {
 
     <div class="my-4 flex items-center justify-between">
       <div class="flex gap-2">
-        <FaButton v-hasPermi="['system:tenantPackage:add']" @click="handleAdd">
+        <FaButton v-auth="['system:tenantPackage:add']" @click="handleAdd">
           <FaIcon name="i-lucide:plus" class="mr-1" /> 新增
         </FaButton>
-        <FaButton v-hasPermi="['system:tenantPackage:edit']" variant="secondary" :disabled="single" @click="handleUpdate()">
+        <FaButton v-auth="['system:tenantPackage:edit']" variant="secondary" :disabled="single" @click="handleUpdate()">
           <FaIcon name="i-lucide:square-pen" class="mr-1" /> 修改
         </FaButton>
-        <FaButton v-hasPermi="['system:tenantPackage:remove']" variant="destructive" :disabled="multiple" @click="handleDelete()">
+        <FaButton v-auth="['system:tenantPackage:remove']" variant="destructive" :disabled="multiple" @click="handleDelete()">
           <FaIcon name="i-lucide:trash-2" class="mr-1" /> 删除
         </FaButton>
-        <FaButton v-hasPermi="['system:tenantPackage:export']" variant="outline" @click="handleExport">
+        <FaButton v-auth="['system:tenantPackage:export']" variant="outline" @click="handleExport">
           <FaIcon name="i-lucide:download" class="mr-1" /> 导出
         </FaButton>
       </div>
@@ -314,7 +314,7 @@ onMounted(() => {
         <template #default="scope">
           <el-tooltip content="修改" placement="top">
             <el-button
-              v-hasPermi="['system:tenantPackage:edit']"
+              v-auth="['system:tenantPackage:edit']"
               link
               type="primary"
               icon="Edit"
@@ -323,7 +323,7 @@ onMounted(() => {
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
             <el-button
-              v-hasPermi="['system:tenantPackage:remove']"
+              v-auth="['system:tenantPackage:remove']"
               link
               type="primary"
               icon="Delete"

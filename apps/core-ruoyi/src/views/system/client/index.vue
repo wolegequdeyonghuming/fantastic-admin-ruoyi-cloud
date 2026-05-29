@@ -218,16 +218,16 @@ onMounted(() => {
 
     <div class="my-4 flex items-center justify-between">
       <div class="flex gap-2">
-        <FaButton v-hasPermi="['system:client:add']" @click="handleAdd">
+        <FaButton v-auth="['system:client:add']" @click="handleAdd">
           <FaIcon name="i-lucide:plus" class="mr-1" /> 新增
         </FaButton>
-        <FaButton v-hasPermi="['system:client:edit']" variant="secondary" :disabled="single" @click="handleUpdate()">
+        <FaButton v-auth="['system:client:edit']" variant="secondary" :disabled="single" @click="handleUpdate()">
           <FaIcon name="i-lucide:edit" class="mr-1" /> 修改
         </FaButton>
-        <FaButton v-hasPermi="['system:client:remove']" variant="destructive" :disabled="multiple" @click="handleDelete()">
+        <FaButton v-auth="['system:client:remove']" variant="destructive" :disabled="multiple" @click="handleDelete()">
           <FaIcon name="i-lucide:trash-2" class="mr-1" /> 删除
         </FaButton>
-        <FaButton v-hasPermi="['system:client:export']" variant="outline" @click="handleExport">
+        <FaButton v-auth="['system:client:export']" variant="outline" @click="handleExport">
           <FaIcon name="i-lucide:download" class="mr-1" /> 导出
         </FaButton>
       </div>
@@ -260,10 +260,10 @@ onMounted(() => {
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-tooltip content="修改" placement="top">
-            <el-button v-hasPermi="['system:client:edit']" link type="primary" icon="Edit" @click="handleUpdate(scope.row)" />
+            <el-button v-auth="['system:client:edit']" link type="primary" icon="Edit" @click="handleUpdate(scope.row)" />
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
-            <el-button v-hasPermi="['system:client:remove']" link type="primary" icon="Delete" @click="handleDelete(scope.row)" />
+            <el-button v-auth="['system:client:remove']" link type="primary" icon="Delete" @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
       </el-table-column>

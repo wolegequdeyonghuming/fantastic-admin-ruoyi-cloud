@@ -3,6 +3,7 @@ import type { UserVO } from '@/api/modules/system/user/types'
 import { getOnline } from '@/api/modules/monitor/online'
 import { getAuthList } from '@/api/modules/system/social/auth'
 import { getUserProfile } from '@/api/modules/system/user'
+import SvgIcon from '@/components/RuoYi/SvgIcon/index.vue'
 import ResetPwd from './resetPwd.vue'
 import UserAvatar from './userAvatar.vue'
 import UserInfo from './userInfo.vue'
@@ -69,37 +70,37 @@ onMounted(() => {
             </div>
             <ul class="list-group list-group-striped">
               <li class="list-group-item">
-                <svg-icon icon-class="user" />用户名称
+                <SvgIcon icon-class="user" />用户名称
                 <div class="pull-right">
                   {{ state.user.userName }}
                 </div>
               </li>
               <li class="list-group-item">
-                <svg-icon icon-class="phone" />手机号码
+                <SvgIcon icon-class="phone" />手机号码
                 <div class="pull-right">
                   {{ state.user.phonenumber }}
                 </div>
               </li>
               <li class="list-group-item">
-                <svg-icon icon-class="email" />用户邮箱
+                <SvgIcon icon-class="email" />用户邮箱
                 <div class="pull-right">
                   {{ state.user.email }}
                 </div>
               </li>
               <li class="list-group-item">
-                <svg-icon icon-class="tree" />所属部门
+                <SvgIcon icon-class="tree" />所属部门
                 <div v-if="state.user.deptName" class="pull-right">
                   {{ state.user.deptName }} / {{ state.postGroup }}
                 </div>
               </li>
               <li class="list-group-item">
-                <svg-icon icon-class="peoples" />所属角色
+                <SvgIcon icon-class="peoples" />所属角色
                 <div class="pull-right">
                   {{ state.roleGroup }}
                 </div>
               </li>
               <li class="list-group-item">
-                <svg-icon icon-class="date" />创建日期
+                <SvgIcon icon-class="date" />创建日期
                 <div class="pull-right">
                   {{ state.user.createTime }}
                 </div>

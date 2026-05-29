@@ -46,6 +46,7 @@ catalog:
   fs-extra: ^11.3.5
   hotkeys-js: ^4.0.4
   http-server: ^14.1.1
+  image-conversion: ^2.1.1
   jsencrypt: ^3.5.4
   lint-staged: ^17.0.5
   lucide-vue-next: ^1.0.0

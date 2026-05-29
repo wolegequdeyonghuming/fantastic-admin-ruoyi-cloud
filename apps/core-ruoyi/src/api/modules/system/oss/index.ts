@@ -7,6 +7,11 @@ export function listOss(query: OssQuery) {
   return api.get<PageResponse<OssVO>>('/system/oss/list', { params: query })
 }
 
+// 查询OSS对象基于id串
+export function listByIds(ossId: string | number) {
+  return api.get<PageResponse<OssVO>>(`/system/oss/listByIds/${ossId}`)
+}
+
 // 删除OSS对象存储
 export function delOss(ossId: number | string | Array<number | string>) {
   return api.delete(`/system/oss/${ossId}`)
